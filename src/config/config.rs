@@ -2,12 +2,13 @@ use std::fs;
 
 use serde::Deserialize;
 
-use crate::system::domain::Domain;
+use crate::config::domain::Domain;
 
 pub const CONFIG_FILE: &str = "config.toml";
 
 #[derive(Deserialize)]
 pub struct Config {
+    pub update_interval_in_seconds: u32,
     pub domains: Vec<Domain>,
 }
 

@@ -1,10 +1,47 @@
-# Cloudflare
+# How often the script should check for changes in seconds
+update_interval_in_seconds=10
 
+[[domains]]
 # The cloudflare API token that will be used to authenticate with the API
-CLOUDFLARE_AUTH_TOKEN="Your token here"
+auth_token="Your auth token here"
 # The cloudflare zone ID that will be used to identify the zone to update
-CLOUDFLARE_ZONE_ID="Your zone ID here"
-# The cloudflare record ID that will be used to identify the record to update
-CLOUDFLARE_RECORD_ID="Your record ID here"
+zone_id="Your zone ID here"
 
-# Configuration
+    [[domains.records]]
+    # The cloudflare record ID that will be used to identify the record to update
+    record_id="The record ID here"
+    # ttl (time to live) for the record
+    # 1 = automatic
+    ttl=1
+    # proxied = true if the record is proxied by cloudflare
+    proxied=false
+    # The domain name that will be updated
+    dns_name="test.example.priv"
+    # The type of record that will be updated
+    # Valid values are: A, AAAA
+    dns_type="A"
+
+    [[domains.records]]
+    record_id="The record ID here"
+    ttl=1
+    proxied=false
+    dns_name="home.example.priv"
+    dns_type="A"
+
+[[domains]]
+auth_token="Your auth token here"
+zone_id="Your zone ID here"
+
+    [[domains.records]]
+    record_id="The record ID here"
+    ttl=1
+    proxied=false
+    dns_name="test.example.test"
+    dns_type="A"
+
+    [[domains.records]]
+    record_id="The record ID here"
+    ttl=1
+    proxied=false
+    dns_name="home.example.test"
+    dns_type="A"

@@ -1,5 +1,5 @@
-use std::net::{Ipv4Addr, Ipv6Addr};
 use public_ip::{addr_v4, addr_v6};
+use std::net::{Ipv4Addr, Ipv6Addr};
 
 pub async fn get_public_ipv4_address() -> Ipv4Addr {
     match addr_v4().await {

@@ -2,7 +2,7 @@
 name = "dyncloud"
 version = "0.1.0"
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
-description = "A CLI tool to add a dynamic DNS record to Cloudflare."
+description = "A programm that handles updating DNS records with your current public IP address for Cloudflare."
 license = "GPL-3"
 repository = "https://github.com/DenuxPlays/dyncloud"
 homepage = "https://github.com/DenuxPlays/dyncloud"
@@ -14,14 +14,19 @@ rust-version = "1.74.0"
 
 [dependencies]
 # Async runtime
-tokio = { version = "1.15.0", features = ["full"] }
+tokio = { version = "1.34.0", features = ["full"] }
 
 # File serialization and deserialization
 toml = "0.8.8"
 
-clokwerk = "0.4.0"
+# Cloudflare API
 cloudflare = "0.11.0"
+
+# Logging
+log = "0.4"
+simple_logger = "4"
 
 # Utils
 public-ip = "0.2.2"
 serde = { version = "1.0.193", features = ["derive"] }
+time = "0.3.30"

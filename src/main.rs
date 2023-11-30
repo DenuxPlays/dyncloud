@@ -1,52 +1,52 @@
-use std::net::Ipv4Addr;
+use cloudflare::framework::async_api::Client;
+use std::time::Duration;
+
+use log::{error, info};
+use tokio::time::interval;
 
 use crate::config::config::Config;
-use cloudflare::endpoints::dns::{DnsContent, UpdateDnsRecord, UpdateDnsRecordParams};
-use cloudflare::framework::async_api::Client;
-use cloudflare::framework::auth::Credentials;
-use cloudflare::framework::{Environment, HttpApiClientConfig};
+use crate::config::domain::{Domain, Record};
+use crate::dns::updater::update_dns_record;
+use crate::ip::ip_changed::{has_ip_changed, LastIpAddresses};
+use crate::util::{build_cloudflare_client, init_logger};
 
 mod config;
-mod scheduling;
-mod public_ip;
+mod dns;
+mod ip;
+mod util;
 
 #[tokio::main]
 async fn main() {
-    let client = build_cloudflare_client();
-    client
-        .request(&UpdateDnsRecord {
-            zone_identifier: "",
-            identifier: "",
-            params: UpdateDnsRecordParams {
-                ttl: Some(1),
-                proxied: Some(false),
-                name: "",
-                content: DnsContent::A {
-                    content: get_public_ip_address().await,
-                },
-            },
-        })
-        .await
-        .expect("Error updating DNS record");
-}
-
-fn build_cloudflare_client() -> Client {
+    init_logger();
+    info!("Starting Cloudflare DNS updater");
     let config = Config::init();
-    match Client::new(
-        Credentials::UserAuthToken {
-            token: config.domains[0].auth_token.clone(),
-        },
-        HttpApiClientConfig::default(),
-        Environment::Production,
-    ) {
-        Ok(client) => client,
-        Err(e) => panic!("Error creating Cloudflare client: {:?}", e),
+    let mut interval = interval(Duration::from_secs(config.update_interval_in_seconds as u64));
+    let client = build_cloudflare_client(&config);
+    let mut last_ip_addresses = LastIpAddresses::default();
+    loop {
+        for domain in &config.domains {
+            info!("[*] Updating domain '{}' with {} records.", &domain.zone_id, &domain.records.len());
+            update_every_record_in_domain(&client, domain, &mut last_ip_addresses).await;
+        }
+        info!("Sleeping for {} seconds\n", config.update_interval_in_seconds);
+        interval.tick().await;
     }
 }
 
-async fn get_public_ip_address() -> Ipv4Addr {
-    match public_ip::addr_v4().await {
-        Some(ip) => ip,
-        None => panic!("Error getting public IP address"),
+async fn update_every_record_in_domain(client: &Client, domain: &Domain, last_ip_addresses: &mut LastIpAddresses) {
+    for record in &domain.records {
+        if has_ip_changed(record.dns_type, last_ip_addresses).await {
+            info!("\t[*] Updating record '{}' with type '{}'", &record.dns_name, &record.dns_type);
+            update_record(&client, domain, &record).await;
+            continue
+        }
+        info!("\t[*] Skipping record '{}' with type '{}' because IP has not changed", &record.dns_name, &record.dns_type);
+    }
+}
+
+async fn update_record(client: &Client, domain: &Domain, record: &Record) {
+    match update_dns_record(&client, domain, &record).await {
+        Ok(_) => info!("\t\t[*] Successfully updated record '{}' with type '{}'", &record.dns_name, &record.dns_type),
+        Err(e) => error!("\t\t[*] Failed to update record '{}' with type '{}': {:?}", &record.dns_name, &record.dns_type, e),
     }
 }
