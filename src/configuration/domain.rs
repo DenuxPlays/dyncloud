@@ -1,4 +1,4 @@
-use crate::config::record_type::DnsRecordType;
+use crate::configuration::record_type::DnsRecordType;
 use serde::Deserialize;
 
 #[derive(Deserialize, Clone)]

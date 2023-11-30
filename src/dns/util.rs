@@ -1,4 +1,4 @@
-use crate::config::record_type::DnsRecordType;
+use crate::configuration::record_type::DnsRecordType;
 use crate::ip::ip_getter::{get_public_ipv4_address, get_public_ipv6_address};
 use cloudflare::endpoints::dns::DnsContent;
 

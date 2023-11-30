@@ -4,13 +4,13 @@ use std::time::Duration;
 use log::{error, info};
 use tokio::time::interval;
 
-use crate::config::config::Config;
-use crate::config::domain::{Domain, Record};
+use crate::configuration::config::Config;
+use crate::configuration::domain::{Domain, Record};
 use crate::dns::updater::update_dns_record;
 use crate::ip::ip_changed::{has_ip_changed, LastIpAddresses};
 use crate::util::{build_cloudflare_client, init_logger};
 
-mod config;
+mod configuration;
 mod dns;
 mod ip;
 mod util;
@@ -37,7 +37,7 @@ async fn update_every_record_in_domain(client: &Client, domain: &Domain, last_ip
     for record in &domain.records {
         if has_ip_changed(record.dns_type, last_ip_addresses).await {
             info!("\t[*] Updating record '{}' with type '{}'", &record.dns_name, &record.dns_type);
-            update_record(&client, domain, &record).await;
+            update_record(client, domain, record).await;
             continue
         }
         info!("\t[*] Skipping record '{}' with type '{}' because IP has not changed", &record.dns_name, &record.dns_type);
@@ -45,7 +45,7 @@ async fn update_every_record_in_domain(client: &Client, domain: &Domain, last_ip
 }
 
 async fn update_record(client: &Client, domain: &Domain, record: &Record) {
-    match update_dns_record(&client, domain, &record).await {
+    match update_dns_record(client, domain, record).await {
         Ok(_) => info!("\t\t[*] Successfully updated record '{}' with type '{}'", &record.dns_name, &record.dns_type),
         Err(e) => error!("\t\t[*] Failed to update record '{}' with type '{}': {:?}", &record.dns_name, &record.dns_type, e),
     }

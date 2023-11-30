@@ -2,7 +2,7 @@ use std::fs;
 
 use serde::Deserialize;
 
-use crate::config::domain::Domain;
+use crate::configuration::domain::Domain;
 
 pub const CONFIG_FILE: &str = "config.toml";
 

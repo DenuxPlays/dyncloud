@@ -2,6 +2,7 @@ use serde::Deserialize;
 use std::fmt::Display;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[allow(clippy::upper_case_acronyms)]
 pub enum DnsRecordType {
     A,
     AAAA,

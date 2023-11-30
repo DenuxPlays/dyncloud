@@ -1,4 +1,4 @@
-use crate::config::config::Config;
+use crate::configuration::config::Config;
 use cloudflare::framework::async_api::Client;
 use cloudflare::framework::auth::Credentials;
 use cloudflare::framework::{Environment, HttpApiClientConfig};

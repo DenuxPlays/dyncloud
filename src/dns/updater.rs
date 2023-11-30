@@ -1,4 +1,4 @@
-use crate::config::domain::{Domain, Record};
+use crate::configuration::domain::{Domain, Record};
 use crate::dns::util::build_dns_content;
 use cloudflare::endpoints::dns::{UpdateDnsRecord, UpdateDnsRecordParams};
 use cloudflare::framework::async_api::Client;
