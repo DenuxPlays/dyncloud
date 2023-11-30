@@ -1,0 +1,10 @@
+# Cloudflare
+
+# The cloudflare API token that will be used to authenticate with the API
+CLOUDFLARE_AUTH_TOKEN="Your token here"
+# The cloudflare zone ID that will be used to identify the zone to update
+CLOUDFLARE_ZONE_ID="Your zone ID here"
+# The cloudflare record ID that will be used to identify the record to update
+CLOUDFLARE_RECORD_ID="Your record ID here"
+
+# Configuration

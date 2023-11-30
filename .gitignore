@@ -1,0 +1,8 @@
+# IDE / Codeeditors
+/.idea
+
+# Rust
+/target
+
+# Programm
+config.toml

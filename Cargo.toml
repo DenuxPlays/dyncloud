@@ -1,0 +1,27 @@
+[package]
+name = "dyncloud"
+version = "0.1.0"
+authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
+description = "A CLI tool to add a dynamic DNS record to Cloudflare."
+license = "GPL-3"
+repository = "https://github.com/DenuxPlays/dyncloud"
+homepage = "https://github.com/DenuxPlays/dyncloud"
+readme = "README.md"
+edition = "2021"
+rust-version = "1.74.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.15.0", features = ["full"] }
+
+# File serialization and deserialization
+toml = "0.8.8"
+
+clokwerk = "0.4.0"
+cloudflare = "0.11.0"
+
+# Utils
+public-ip = "0.2.2"
+serde = { version = "1.0.193", features = ["derive"] }
