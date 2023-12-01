@@ -1,6 +1,6 @@
 [package]
 name = "dyncloud"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
 description = "A programm that handles updating DNS records with your current public IP address for Cloudflare."
 license = "GPL-3"
@@ -30,3 +30,21 @@ simple_logger = "4"
 public-ip = "0.2.2"
 serde = { version = "1.0.193", features = ["derive"] }
 time = "0.3.30"
+
+# The profile that 'cargo dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
+
+# Config for 'cargo dist'
+[workspace.metadata.dist]
+# The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
+cargo-dist-version = "0.5.0"
+# CI backends to support
+ci = ["github"]
+# The installers to generate for each app
+installers = []
+# Target platforms to build apps for (Rust target-triple syntax)
+targets = ["x86_64-unknown-linux-gnu", "x86_64-unknown-linux-musl", "aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-pc-windows-msvc"]
+# Publish jobs to run in CI
+pr-run-mode = "plan"

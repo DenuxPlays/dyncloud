@@ -18,7 +18,7 @@ mod util;
 #[tokio::main]
 async fn main() {
     init_logger();
-    info!("Starting Cloudflare DNS updater");
+    info!("Starting Dyncloud...!");
     let config = Config::init();
     let mut interval = interval(Duration::from_secs(config.update_interval_in_seconds as u64));
     let client = build_cloudflare_client(&config);
