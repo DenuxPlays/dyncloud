@@ -117,11 +117,11 @@ jobs:
         run: |
           ${{ matrix.packages_install }}
       - name: Install aarch64-linux-musl-gcc if needed
-        if: ${{ ${{ join(matrix.targets, ', ') }} = 'aarch64-linux-musl-gcc' }}
+        if: ${{ join(matrix.targets, ', ') = 'aarch64-linux-musl-gcc' }}
         run: |
           sudo apt-get install -y aarch64-linux-musl-gcc
       - name: Install aarch64-linux-gnu-gcc if needed
-        if: ${{ ${{ join(matrix.targets, ', ') }} = 'aarch64-linux-gnu-gcc' }}
+        if: ${{ join(matrix.targets, ', ') = 'aarch64-linux-gnu-gcc' }}
         run: |
           sudo apt-get install -y aarch64-linux-gnu-gcc
       - name: Install toolchains
