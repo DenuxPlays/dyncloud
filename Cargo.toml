@@ -38,7 +38,7 @@ lto = "thin"
 
 # Config for 'cargo dist'
 [workspace.metadata.dist]
-allow-dirty = true
+allow-dirty = ["ci"]
 # The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
 cargo-dist-version = "0.5.0"
 # CI backends to support
@@ -57,3 +57,4 @@ targets = [
 ]
 # Publish jobs to run in CI
 pr-run-mode = "plan"
+
