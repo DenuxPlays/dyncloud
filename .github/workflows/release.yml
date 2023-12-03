@@ -116,6 +116,14 @@ jobs:
       - name: Install dependencies
         run: |
           ${{ matrix.packages_install }}
+      - name: Install aarch64-linux-musl-gcc if needed
+        if: ${{ ${{ join(matrix.targets, ', ') }} = 'aarch64-linux-musl-gcc' }}
+        run: |
+          sudo apt-get install -y aarch64-linux-musl-gcc
+      - name: Install aarch64-linux-gnu-gcc if needed
+        if: ${{ ${{ join(matrix.targets, ', ') }} = 'aarch64-linux-gnu-gcc' }}
+        run: |
+          sudo apt-get install -y aarch64-linux-gnu-gcc
       - name: Install toolchains
         run: rustup target add ${{ join(matrix.targets, ', ') }}
       - name: Build artifacts
