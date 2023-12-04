@@ -25,10 +25,8 @@ async fn main() {
     let mut last_ip_addresses = LastIpAddresses::default();
     loop {
         for domain in &config.domains {
-            info!("[*] Updating domain '{}' with {} records.", &domain.zone_id, &domain.records.len());
             update_every_record_in_domain(&client, domain, &mut last_ip_addresses).await;
         }
-        info!("Sleeping for {} seconds\n", config.update_interval_in_seconds);
         interval.tick().await;
     }
 }
@@ -36,17 +34,16 @@ async fn main() {
 async fn update_every_record_in_domain(client: &Client, domain: &Domain, last_ip_addresses: &mut LastIpAddresses) {
     for record in &domain.records {
         if has_ip_changed(record.dns_type, last_ip_addresses).await {
-            info!("\t[*] Updating record '{}' with type '{}'", &record.dns_name, &record.dns_type);
+            info!("[*] Updating record '{}' with type '{}'", &record.dns_name, &record.dns_type);
             update_record(client, domain, record).await;
             continue
         }
-        info!("\t[*] Skipping record '{}' with type '{}' because IP has not changed", &record.dns_name, &record.dns_type);
     }
 }
 
 async fn update_record(client: &Client, domain: &Domain, record: &Record) {
     match update_dns_record(client, domain, record).await {
-        Ok(_) => info!("\t\t[*] Successfully updated record '{}' with type '{}'", &record.dns_name, &record.dns_type),
-        Err(e) => error!("\t\t[*] Failed to update record '{}' with type '{}': {:?}", &record.dns_name, &record.dns_type, e),
+        Ok(_) => info!("\t[*] Successfully updated record '{}' with type '{}'", &record.dns_name, &record.dns_type),
+        Err(e) => error!("\t[*] Failed to update record '{}' with type '{}': {:?}", &record.dns_name, &record.dns_type, e),
     }
 }
