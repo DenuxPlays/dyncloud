@@ -29,4 +29,4 @@ simple_logger = "4"
 # Utils
 public-ip = "0.2.2"
 serde = { version = "1.0.193", features = ["derive"] }
-time = "0.3.30"
+time = "0.3.31"
