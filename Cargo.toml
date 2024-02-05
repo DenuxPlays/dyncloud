@@ -14,7 +14,7 @@ rust-version = "1.74.0"
 
 [dependencies]
 # Async runtime
-tokio = { version = "1.35.1", features = ["rt", "macros", "rt-multi-thread"] }
+tokio = { version = "1.36.0", features = ["rt", "macros", "rt-multi-thread"] }
 
 # File serialization and deserialization
 toml = "0.8.9"
