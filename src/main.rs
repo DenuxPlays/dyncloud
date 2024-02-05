@@ -36,7 +36,7 @@ async fn update_every_record_in_domain(client: &Client, domain: &Domain, last_ip
         if has_ip_changed(record.dns_type, last_ip_addresses).await {
             info!("[*] Updating record '{}' with type '{}'", &record.dns_name, &record.dns_type);
             update_record(client, domain, record).await;
-            continue
+            continue;
         }
     }
 }
@@ -44,6 +44,8 @@ async fn update_every_record_in_domain(client: &Client, domain: &Domain, last_ip
 async fn update_record(client: &Client, domain: &Domain, record: &Record) {
     match update_dns_record(client, domain, record).await {
         Ok(_) => info!("\t[*] Successfully updated record '{}' with type '{}'", &record.dns_name, &record.dns_type),
-        Err(e) => error!("\t[*] Failed to update record '{}' with type '{}': {:?}", &record.dns_name, &record.dns_type, e),
+        Err(e) => {
+            error!("\t[*] Failed to update record '{}' with type '{}': {:?}", &record.dns_name, &record.dns_type, e)
+        }
     }
 }
