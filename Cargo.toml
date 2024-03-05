@@ -8,7 +8,7 @@ repository = "https://github.com/DenuxPlays/dyncloud"
 homepage = "https://github.com/DenuxPlays/dyncloud"
 readme = "README.md"
 edition = "2021"
-rust-version = "1.74.0"
+rust-version = "1.76.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -23,8 +23,8 @@ toml = "0.8.10"
 cloudflare = { version = "0.11.0", features = ["rustls-tls"], default-features = false }
 
 # Logging
-log = "0.4"
-simple_logger = "4"
+log = "0.4.21"
+simple_logger = "4.3.3"
 
 # Utils
 public-ip = "0.2.2"
