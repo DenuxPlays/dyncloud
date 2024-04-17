@@ -28,5 +28,5 @@ simple_logger = "4.3.3"
 
 # Utils
 public-ip = "0.2.2"
-serde = { version = "1.0.197", features = ["derive"] }
+serde = { version = "1.0.198", features = ["derive"] }
 time = "0.3.36"
