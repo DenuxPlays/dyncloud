@@ -8,7 +8,7 @@ repository = "https://github.com/DenuxPlays/dyncloud"
 homepage = "https://github.com/DenuxPlays/dyncloud"
 readme = "README.md"
 edition = "2021"
-rust-version = "1.76.0"
+rust-version = "1.79.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
