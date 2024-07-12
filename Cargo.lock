@@ -291,7 +291,7 @@ dependencies = [
 
 [[package]]
 name = "dyncloud"
-version = "1.0.2"
+version = "1.0.5"
 dependencies = [
  "cloudflare",
  "log",

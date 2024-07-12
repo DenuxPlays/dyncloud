@@ -1,6 +1,6 @@
 [package]
 name = "dyncloud"
-version = "1.0.2"
+version = "1.0.5"
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
 description = "A programm that handles updating DNS records with your current public IP address for Cloudflare."
 license = "GPL-3"
