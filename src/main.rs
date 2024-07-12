@@ -1,7 +1,9 @@
-use cloudflare::framework::async_api::Client;
 use std::time::Duration;
 
+use cloudflare::framework::async_api::Client;
 use log::{error, info};
+#[cfg(feature = "enable_mimalloc")]
+use mimalloc::MiMalloc;
 use tokio::time::interval;
 
 use crate::configuration::config::Config;
@@ -9,6 +11,10 @@ use crate::configuration::domain::{Domain, Record};
 use crate::dns::updater::update_dns_record;
 use crate::ip::ip_changed::{has_ip_changed, LastIpAddresses};
 use crate::util::{build_cloudflare_client, init_logger};
+
+#[cfg(feature = "enable_mimalloc")]
+#[cfg_attr(feature = "enable_mimalloc", global_allocator)]
+static GLOBAL: MiMalloc = MiMalloc;
 
 mod configuration;
 mod dns;

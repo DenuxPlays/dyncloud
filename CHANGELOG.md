@@ -15,6 +15,10 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 
 ## unreleased
 
+### Added
+
+- docker image
+
 ## Version 1.1.0 (12.07.2024)
 
 ### Added
