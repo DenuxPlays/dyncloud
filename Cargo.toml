@@ -10,6 +10,12 @@ readme = "README.md"
 edition = "2021"
 rust-version = "1.79.0"
 
+[package.metadata.wix]
+upgrade-guid = "2A41DDA9-0B62-4946-BFFC-410B38137366"
+path-guid = "EAD2959B-66EC-4A95-BC27-3DF7E4057C47"
+license = false
+eula = false
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
@@ -30,3 +36,25 @@ simple_logger = "5.0.0"
 public-ip = "0.2.2"
 serde = { version = "1.0.204", features = ["derive"] }
 time = "0.3.36"
+
+# The profile that 'cargo dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
+
+# Config for 'cargo dist'
+[workspace.metadata.dist]
+# The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
+cargo-dist-version = "0.19.0"
+# CI backends to support
+ci = "github"
+# The installers to generate for each app
+installers = ["shell", "powershell", "msi"]
+# Target platforms to build apps for (Rust target-triple syntax)
+targets = ["aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-unknown-linux-musl", "x86_64-pc-windows-msvc"]
+# Path that installers should place binaries in
+install-path = "CARGO_HOME"
+# Publish jobs to run in CI
+pr-run-mode = "plan"
+# Whether to install an updater program
+install-updater = true
