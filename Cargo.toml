@@ -23,7 +23,7 @@ enable_mimalloc = ["mimalloc"]
 
 [dependencies]
 # Async runtime
-tokio = { version = "1.38.0", features = ["rt", "macros", "rt-multi-thread"] }
+tokio = { version = "1.38.1", features = ["rt", "macros", "rt-multi-thread"] }
 
 # File serialization and deserialization
 toml = "0.8.14"
