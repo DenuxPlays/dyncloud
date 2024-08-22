@@ -15,6 +15,16 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 
 ## unreleased
 
+### Fixed
+
+- fixed cloudflare api
+
+### Changed
+
+- updated dependencies
+- updated to latest `cargo-dist`
+- updated rust
+
 ## Version 1.2.0 (12.07.2024)
 
 ### Added
