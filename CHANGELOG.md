@@ -15,6 +15,8 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 
 ## unreleased
 
+## Version 1.2.1 (22.08.2024)
+
 ### Fixed
 
 - fixed cloudflare api
