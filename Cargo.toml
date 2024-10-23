@@ -37,7 +37,7 @@ simple_logger = "5.0.0"
 
 # Utils
 public-ip = "0.2.2"
-serde = { version = "1.0.211", features = ["derive"] }
+serde = { version = "1.0.213", features = ["derive"] }
 time = "0.3.36"
 
 # mimalloc
