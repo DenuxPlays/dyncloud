@@ -1,4 +1,4 @@
-FROM rust:1.80.1-alpine3.20 AS builder
+FROM rust:1.82.0-alpine3.20 AS builder
 
 RUN apk add --no-cache \
     musl-dev \
@@ -13,7 +13,7 @@ COPY . .
 RUN cargo build --release --features "mimalloc"
 
 # Final stage: create a minimal runtime image
-FROM alpine:3.20.1
+FROM alpine:3.20.3
 
 # Update package repositories
 RUN apk add --no-cache curl

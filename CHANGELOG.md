@@ -13,7 +13,11 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
-## unreleased
+## Version 1.2.2 (04.11.2024)
+
+### Changed
+
+- updated dependencies
 
 ## Version 1.2.1 (22.08.2024)
 
