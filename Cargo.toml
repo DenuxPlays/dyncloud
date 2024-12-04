@@ -29,7 +29,7 @@ tokio = { version = "1.42.0", features = ["rt", "macros", "rt-multi-thread"] }
 toml = "0.8.19"
 
 # Cloudflare API
-cloudflare = { git = "https://github.com/cloudflare/cloudflare-rs", rev = "f14720e42184ee176a97676e85ef2d2d85bc3aae", features = ["rustls-tls"], default-features = false }
+cloudflare = { git = "https://github.com/cloudflare/cloudflare-rs", rev = "bea21a7dc592a66f58b0a9276c6e4f1eef379238", features = ["rustls-tls"], default-features = false }
 
 # Logging
 log = "0.4.22"
