@@ -13,7 +13,12 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
-## unreleased
+## Version 1.2.3 (04.12.2024)
+
+### Changed
+
+- updated dependencies
+- fixed CVE [GHSA-wwq9-3cpr-mm53](https://github.com/DenuxPlays/dyncloud/security/dependabot/5)
 
 ## Version 1.2.2 (04.11.2024)
 
