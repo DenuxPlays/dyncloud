@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 We use an updated version of the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 <br>
 What we've changed:
+
 - We use a nicer title format (Version x.x.x (DD.MM.YYYY)) that plays well with `cargo-dist`.
 - We add `**[Breaking]**` to breaking changes to make them stand out more.
   <br>
@@ -14,6 +15,16 @@ What we've changed:
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
 ## unreleased
+
+### Added
+
+- added build for "aarch64-unknown-linux-gnu"
+- added build for "aarch64-pc-windows-msvc"
+
+### Changed
+
+- updated dependencies
+- updated to latest `cargo-dist`
 
 ## Version 1.2.3 (04.12.2024)
 
