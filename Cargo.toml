@@ -39,7 +39,17 @@ simple_logger = "5.0.0"
 serde = { version = "1.0.216", features = ["derive"] }
 
 # HTTP client
-reqwest = { version = "0.12.9", features = ["brotli", "gzip", "deflate", "zstd", "rustls-tls", "json"] }
+reqwest = { version = "0.12.9", features = [
+    "brotli",
+    "gzip",
+    "deflate",
+    "zstd",
+    "rustls-tls",
+    "json",
+    "charset",
+    "http2",
+    "macos-system-configuration"
+], default-features = false }
 
 # Utils
 time = "0.3.37"
