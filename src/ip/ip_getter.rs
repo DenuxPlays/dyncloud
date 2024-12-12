@@ -1,4 +1,3 @@
-use serde::Deserialize;
 use std::net::{Ipv4Addr, Ipv6Addr};
 
 pub async fn get_public_ipv4_address() -> Ipv4Addr {
@@ -15,27 +14,22 @@ pub async fn get_public_ipv6_address() -> Ipv6Addr {
     }
 }
 
-#[derive(Debug, Deserialize)]
-struct IpifyResponse {
-    pub ip: String,
-}
-
-pub const IPIFY_V4_URL: &str = "https://api.ipify.org?format=json";
-pub const IPIFY_V6_URL: &str = "https://api64.ipify.org?format=json";
+pub const IPIFY_V4_URL: &str = "https://api.ipify.org";
+pub const IPIFY_V6_URL: &str = "https://api6.ipify.org";
 
 #[derive(Debug)]
 pub struct IpGetter;
 
 impl IpGetter {
     pub async fn get_public_ipv4() -> Result<Ipv4Addr, anyhow::Error> {
-        let resp = reqwest::get(IPIFY_V4_URL).await?.json::<IpifyResponse>().await?;
+        let resp = reqwest::get(IPIFY_V4_URL).await?.text().await?;
 
-        Ok(resp.ip.parse()?)
+        Ok(resp.parse()?)
     }
 
     pub async fn get_public_ipv6() -> Result<Ipv6Addr, anyhow::Error> {
-        let resp = reqwest::get(IPIFY_V6_URL).await?.json::<IpifyResponse>().await?;
+        let resp = reqwest::get(IPIFY_V6_URL).await?.text().await?;
 
-        Ok(resp.ip.parse()?)
+        Ok(resp.parse()?)
     }
 }

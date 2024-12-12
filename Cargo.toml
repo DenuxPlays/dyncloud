@@ -1,6 +1,6 @@
 [package]
 name = "dyncloud"
-version = "1.5.0"
+version = "1.5.1"
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
 description = "A programm that handles updating DNS records with your current public IP address for Cloudflare."
 license = "GPL-3"
@@ -40,12 +40,7 @@ serde = { version = "1.0.216", features = ["derive"] }
 
 # HTTP client
 reqwest = { version = "0.12.9", features = [
-    "brotli",
-    "gzip",
-    "deflate",
-    "zstd",
     "rustls-tls",
-    "json",
     "charset",
     "http2",
     "macos-system-configuration"
