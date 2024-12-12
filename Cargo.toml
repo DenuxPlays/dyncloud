@@ -35,10 +35,15 @@ cloudflare = { git = "https://github.com/cloudflare/cloudflare-rs", rev = "bea21
 log = "0.4.22"
 simple_logger = "5.0.0"
 
-# Utils
-public-ip = "0.2.2"
+# Serde
 serde = { version = "1.0.216", features = ["derive"] }
+
+# HTTP client
+reqwest = { version = "0.12.9", features = ["brotli", "gzip", "deflate", "zstd", "rustls-tls", "json"] }
+
+# Utils
 time = "0.3.37"
+anyhow = "1.0.94"
 
 # mimalloc
 # Replaces musl malloc since it is very slow

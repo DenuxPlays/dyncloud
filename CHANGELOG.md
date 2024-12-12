@@ -16,6 +16,15 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 
 ## unreleased
 
+### Added
+
+- add own implementation that uses `ipify` for getting the public ip
+- re-added build for "aarch64-pc-windows-msvc"
+
+### Fixed
+
+- fixed [CVE-2024-12224](https://github.com/DenuxPlays/dyncloud/security/dependabot/6)
+
 ## Version 1.4.0 (12.12.2024)
 
 ### Added
