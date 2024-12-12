@@ -14,6 +14,16 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
+## Version 1.4.0 (12.12.2024)
+
+### Added
+
+- added build for "aarch64-unknown-linux-musl"
+
+### Removed
+
+- removed build for "aarch64-pc-windows-msvc" (was not working so no breaking change here)
+
 ## Version 1.3.0 (12.12.2024)
 
 ### Added

@@ -1,6 +1,6 @@
 [package]
 name = "dyncloud"
-version = "1.3.0"
+version = "1.4.0"
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
 description = "A programm that handles updating DNS records with your current public IP address for Cloudflare."
 license = "GPL-3"
@@ -48,20 +48,3 @@ mimalloc = { version = "0.1.43", optional = true }
 [profile.dist]
 inherits = "release"
 lto = "thin"
-
-# Config for 'dist'
-[workspace.metadata.dist]
-# The preferred dist version to use in CI (Cargo.toml SemVer syntax)
-cargo-dist-version = "0.26.0"
-# CI backends to support
-ci = "github"
-# The installers to generate for each app
-installers = ["shell", "powershell", "msi"]
-# Target platforms to build apps for (Rust target-triple syntax)
-targets = ["aarch64-apple-darwin", "aarch64-unknown-linux-gnu", "aarch64-pc-windows-msvc", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-unknown-linux-musl", "x86_64-pc-windows-msvc"]
-# Path that installers should place binaries in
-install-path = "CARGO_HOME"
-# Which actions to run on pull requests
-pr-run-mode = "plan"
-# Whether to install an updater program
-install-updater = true
