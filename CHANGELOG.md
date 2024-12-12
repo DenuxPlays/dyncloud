@@ -19,7 +19,6 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 ### Added
 
 - add own implementation that uses `ipify` for getting the public ip
-- re-added build for "aarch64-pc-windows-msvc"
 
 ### Fixed
 

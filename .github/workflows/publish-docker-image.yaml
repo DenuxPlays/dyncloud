@@ -3,7 +3,7 @@ name: Create and publish Docker image
 on:
   push:
     tags:
-      - '^v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 concurrency:
   group: "docker-build-backend"
