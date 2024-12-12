@@ -14,6 +14,12 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
+## Version 1.5.1 (12.12.2024)
+
+### Fixed
+
+- docker workflow
+
 ## Version 1.5.0 (12.12.2024)
 
 ### Added
