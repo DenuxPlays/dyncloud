@@ -25,6 +25,7 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 
 - updated dependencies
 - updated to latest `cargo-dist`
+- updated docker image to use alpine 3.21
 
 ## Version 1.2.3 (04.12.2024)
 
