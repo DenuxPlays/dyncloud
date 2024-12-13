@@ -1,5 +1,8 @@
 {
     extends: [
         "github>DenuxPlays/renovate-config:rust.json5"
+    ],
+    ignorePaths: [
+        ".github/workflows/release.yml"
     ]
 }
