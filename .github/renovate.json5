@@ -1,0 +1,5 @@
+{
+    extends: [
+        "github>DenuxPlays/renovate-config:rust.json5"
+    ]
+}
