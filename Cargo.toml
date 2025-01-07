@@ -57,4 +57,4 @@ mimalloc = { version = "0.1.43", optional = true }
 # The profile that 'cargo dist' will build with
 [profile.dist]
 inherits = "release"
-lto = "thin"
+lto = true
