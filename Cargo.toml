@@ -32,7 +32,7 @@ toml = "0.8.19"
 cloudflare = { git = "https://github.com/cloudflare/cloudflare-rs", rev = "bea21a7dc592a66f58b0a9276c6e4f1eef379238", features = ["rustls-tls"], default-features = false }
 
 # Logging
-log = "0.4.22"
+log = "0.4.24"
 simple_logger = "5.0.0"
 
 # Serde
