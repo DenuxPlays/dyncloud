@@ -20,6 +20,7 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 
 - updated cargo-dist
 - updated dependencies
+- updated to latest rust
 
 ## Version 1.5.1 (12.12.2024)
 
