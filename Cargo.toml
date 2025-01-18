@@ -8,7 +8,7 @@ repository = "https://github.com/DenuxPlays/dyncloud"
 homepage = "https://github.com/DenuxPlays/dyncloud"
 readme = "README.md"
 edition = "2021"
-rust-version = "1.83.0"
+rust-version = "1.84.0"
 
 [package.metadata.wix]
 upgrade-guid = "2A41DDA9-0B62-4946-BFFC-410B38137366"
@@ -32,7 +32,7 @@ toml = "0.8.19"
 cloudflare = { git = "https://github.com/cloudflare/cloudflare-rs", rev = "bea21a7dc592a66f58b0a9276c6e4f1eef379238", features = ["rustls-tls"], default-features = false }
 
 # Logging
-log = "0.4.24"
+log = "0.4.25"
 simple_logger = "5.0.0"
 
 # Serde
