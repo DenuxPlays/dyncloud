@@ -47,7 +47,7 @@ reqwest = { version = "0.12.14", features = [
 ], default-features = false }
 
 # Utils
-time = "0.3.39"
+time = "0.3.40"
 anyhow = "1.0.97"
 
 # mimalloc
