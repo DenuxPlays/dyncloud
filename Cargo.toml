@@ -1,14 +1,14 @@
 [package]
 name = "dyncloud"
-version = "1.5.1"
+version = "1.5.2"
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
 description = "A programm that handles updating DNS records with your current public IP address for Cloudflare."
 license = "GPL-3"
 repository = "https://github.com/DenuxPlays/dyncloud"
 homepage = "https://github.com/DenuxPlays/dyncloud"
 readme = "README.md"
-edition = "2021"
-rust-version = "1.84.0"
+edition = "2024"
+rust-version = "1.85.1"
 
 [package.metadata.wix]
 upgrade-guid = "2A41DDA9-0B62-4946-BFFC-410B38137366"
@@ -29,7 +29,7 @@ tokio = { version = "1.44.1", features = ["rt", "macros", "rt-multi-thread"] }
 toml = "0.8.20"
 
 # Cloudflare API
-cloudflare = { git = "https://github.com/cloudflare/cloudflare-rs", rev = "bea21a7dc592a66f58b0a9276c6e4f1eef379238", features = ["rustls-tls"], default-features = false }
+cloudflare = { version = "0.14.0", features = ["rustls-tls"], default-features = false }
 
 # Logging
 log = "0.4.27"

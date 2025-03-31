@@ -14,7 +14,13 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
-## unreleased
+## Version 1.5.2 (31.03.2025)
+
+### Fixed
+
+- fixed [GHSA-4p46-pwfr-66x6](https://github.com/DenuxPlays/dyncloud/security/dependabot/7)
+    - We should not be affected by this, but we updated the dependency to be sure.
+- Fixed cloudflare API error
 
 ### Changed
 
@@ -26,7 +32,7 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 
 ### Fixed
 
-- docker workflow#
+- docker workflow
 
 ### Changed
 

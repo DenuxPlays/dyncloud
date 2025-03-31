@@ -1,7 +1,8 @@
 use crate::configuration::config::Config;
-use cloudflare::framework::async_api::Client;
 use cloudflare::framework::auth::Credentials;
-use cloudflare::framework::{Environment, HttpApiClientConfig};
+use cloudflare::framework::client::async_api::Client;
+use cloudflare::framework::client::ClientConfig;
+use cloudflare::framework::Environment;
 use log::LevelFilter;
 use simple_logger::SimpleLogger;
 use time::macros::format_description;
@@ -20,7 +21,7 @@ pub fn build_cloudflare_client(config: &Config) -> Client {
         Credentials::UserAuthToken {
             token: config.domains[0].auth_token.clone(),
         },
-        HttpApiClientConfig::default(),
+        ClientConfig::default(),
         Environment::Production,
     ) {
         Ok(client) => client,

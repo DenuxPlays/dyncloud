@@ -1,7 +1,7 @@
 use crate::configuration::domain::{Domain, Record};
 use crate::dns::util::build_dns_content;
-use cloudflare::endpoints::dns::{UpdateDnsRecord, UpdateDnsRecordParams};
-use cloudflare::framework::async_api::Client;
+use cloudflare::endpoints::dns::dns::{UpdateDnsRecord, UpdateDnsRecordParams};
+use cloudflare::framework::client::async_api::Client;
 use cloudflare::framework::response::ApiFailure;
 
 pub async fn update_dns_record(client: &Client, domain: &Domain, record: &Record) -> Result<(), ApiFailure> {

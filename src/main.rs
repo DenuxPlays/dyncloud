@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use cloudflare::framework::async_api::Client;
+use cloudflare::framework::client::async_api::Client;
 use log::{error, info};
 #[cfg(feature = "enable_mimalloc")]
 use mimalloc::MiMalloc;
