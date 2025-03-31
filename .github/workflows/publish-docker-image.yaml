@@ -15,7 +15,7 @@ env:
 
 jobs:
   build-and-push-image:
-    runs-on: ubuntu-22.04 # Replace with latest when https://github.com/rust-lang/rust/issues/135867 is fixed
+    runs-on: ubuntu-24.04 # Replace with latest when https://github.com/rust-lang/rust/issues/135867 is fixed
     permissions:
       contents: read
       packages: write
