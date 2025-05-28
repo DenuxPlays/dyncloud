@@ -39,7 +39,7 @@ simple_logger = "5.0.0"
 serde = { version = "1.0.219", features = ["derive"] }
 
 # HTTP client
-reqwest = { version = "0.12.16", features = [
+reqwest = { version = "0.12.17", features = [
     "rustls-tls",
     "charset",
     "http2",
