@@ -52,7 +52,7 @@ anyhow = "1.0.98"
 
 # mimalloc
 # Replaces musl malloc since it is very slow
-mimalloc = { version = "0.1.46", optional = true }
+mimalloc = { version = "0.1.47", optional = true }
 
 # The profile that 'cargo dist' will build with
 [profile.dist]
