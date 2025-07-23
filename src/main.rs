@@ -9,7 +9,7 @@ use tokio::time::interval;
 use crate::configuration::config::Config;
 use crate::configuration::domain::{Domain, Record};
 use crate::dns::updater::update_dns_record;
-use crate::ip::ip_changed::{has_ip_changed, LastIpAddresses};
+use crate::ip::ip_changed::{LastIpAddresses, has_ip_changed};
 use crate::util::{build_cloudflare_client, init_logger};
 
 #[cfg(feature = "enable_mimalloc")]
