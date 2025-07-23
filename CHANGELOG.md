@@ -6,7 +6,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 We use an updated version of the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 
-
 What we've changed:
 
 - We use a nicer title format (Version x.x.x (DD.MM.YYYY)) that plays well with `cargo-dist`.
@@ -15,7 +14,7 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
-## unreleased
+## Version 1.5.3 (23.07.2025)
 
 ### Changed
 

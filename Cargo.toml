@@ -1,6 +1,6 @@
 [package]
 name = "dyncloud"
-version = "1.5.2"
+version = "1.5.3"
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
 description = "A programm that handles updating DNS records with your current public IP address for Cloudflare."
 license = "GPL-3"
@@ -8,7 +8,7 @@ repository = "https://github.com/DenuxPlays/dyncloud"
 homepage = "https://github.com/DenuxPlays/dyncloud"
 readme = "README.md"
 edition = "2024"
-rust-version = "1.85.1"
+rust-version = "1.88.0"
 
 [package.metadata.wix]
 upgrade-guid = "2A41DDA9-0B62-4946-BFFC-410B38137366"
