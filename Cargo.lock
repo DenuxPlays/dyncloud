@@ -234,7 +234,7 @@ checksum = "1c7a8fb8a9fbf66c1f703fe16184d10ca0ee9d23be5b4436400408ba54a95005"
 
 [[package]]
 name = "dyncloud"
-version = "1.5.2"
+version = "1.5.3"
 dependencies = [
  "anyhow",
  "cloudflare",
