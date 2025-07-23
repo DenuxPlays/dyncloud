@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 We use an updated version of the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
-<br>
+
+
 What we've changed:
 
 - We use a nicer title format (Version x.x.x (DD.MM.YYYY)) that plays well with `cargo-dist`.
@@ -13,6 +14,15 @@ What we've changed:
   <br>
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
+
+## unreleased
+
+### Changed
+
+- updated rust
+- updated dependencies
+- updated cargo-dist
+- updated alpine to 3.22
 
 ## Version 1.5.2 (31.03.2025)
 

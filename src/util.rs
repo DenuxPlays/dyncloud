@@ -1,8 +1,8 @@
 use crate::configuration::config::Config;
-use cloudflare::framework::auth::Credentials;
-use cloudflare::framework::client::async_api::Client;
-use cloudflare::framework::client::ClientConfig;
 use cloudflare::framework::Environment;
+use cloudflare::framework::auth::Credentials;
+use cloudflare::framework::client::ClientConfig;
+use cloudflare::framework::client::async_api::Client;
 use log::LevelFilter;
 use simple_logger::SimpleLogger;
 use time::macros::format_description;
@@ -25,6 +25,6 @@ pub fn build_cloudflare_client(config: &Config) -> Client {
         Environment::Production,
     ) {
         Ok(client) => client,
-        Err(e) => panic!("Error creating Cloudflare client: {:?}", e),
+        Err(e) => panic!("Error creating Cloudflare client: {e:?}"),
     }
 }

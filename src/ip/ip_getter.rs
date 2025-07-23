@@ -3,14 +3,14 @@ use std::net::{Ipv4Addr, Ipv6Addr};
 pub async fn get_public_ipv4_address() -> Ipv4Addr {
     match IpGetter::get_public_ipv4().await {
         Ok(ip) => ip,
-        Err(err) => panic!("Error getting public IPv4 address: {}", err),
+        Err(err) => panic!("Error getting public IPv4 address: {err}"),
     }
 }
 
 pub async fn get_public_ipv6_address() -> Ipv6Addr {
     match IpGetter::get_public_ipv6().await {
         Ok(ip) => ip,
-        Err(err) => panic!("Error getting public IPv6 address: {}", err),
+        Err(err) => panic!("Error getting public IPv6 address: {err}"),
     }
 }
 
