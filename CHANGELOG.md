@@ -22,6 +22,7 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 - updated rust
 - updated dependencies
 - updated cargo-dist
+- updated alpine to 3.22
 
 ## Version 1.5.2 (31.03.2025)
 
