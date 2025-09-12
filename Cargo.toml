@@ -32,7 +32,7 @@ toml = "0.9.5"
 cloudflare = { version = "0.14.0", features = ["rustls-tls"], default-features = false }
 
 # Logging
-log = "0.4.27"
+log = "0.4.28"
 simple_logger = "5.0.0"
 
 # Serde
@@ -47,12 +47,12 @@ reqwest = { version = "0.12.23", features = [
 ], default-features = false }
 
 # Utils
-time = "0.3.41"
+time = "0.3.43"
 anyhow = "1.0.99"
 
 # mimalloc
 # Replaces musl malloc since it is very slow
-mimalloc = { version = "0.1.48", optional = true }
+mimalloc = { version = "0.1.48", optional = true, features = ["v3"] }
 
 # The profile that 'cargo dist' will build with
 [profile.dist]
