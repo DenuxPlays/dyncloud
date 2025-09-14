@@ -1,8 +1,8 @@
 [package]
 name = "dyncloud"
-version = "1.5.4"
+version = "2.0.0"
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
-description = "A programm that handles updating DNS records with your current public IP address for Cloudflare."
+description = "A programm that handles updating DNS records with your current public IP address."
 license = "AGPL-3"
 repository = "https://github.com/DenuxPlays/dyncloud"
 homepage = "https://github.com/DenuxPlays/dyncloud"
@@ -25,6 +25,9 @@ enable_mimalloc = ["mimalloc"]
 # Async runtime
 tokio = { version = "1.47.1", features = ["rt", "macros", "rt-multi-thread"] }
 
+# Scheduling
+tokio-cron-scheduler = "0.14.0"
+
 # File serialization and deserialization
 toml = "0.9.7"
 
@@ -43,11 +46,14 @@ reqwest = { version = "0.12.23", features = [
     "rustls-tls",
     "charset",
     "http2",
-    "macos-system-configuration"
+    "system-proxy"
 ], default-features = false }
 
 # Utils
 time = "0.3.44"
+
+# Error handling
+thiserror = "2.0.16"
 anyhow = "1.0.100"
 
 # mimalloc

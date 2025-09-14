@@ -2,19 +2,18 @@ use std::time::Duration;
 
 use cloudflare::framework::client::async_api::Client;
 use log::{error, info};
-#[cfg(feature = "enable_mimalloc")]
-use mimalloc::MiMalloc;
 use tokio::time::interval;
 
 use crate::configuration::config::Config;
 use crate::configuration::domain::{Domain, Record};
+use crate::configuration::v2;
 use crate::dns::updater::update_dns_record;
 use crate::ip::ip_changed::{LastIpAddresses, has_ip_changed};
 use crate::util::{build_cloudflare_client, init_logger};
 
 #[cfg(feature = "enable_mimalloc")]
 #[cfg_attr(feature = "enable_mimalloc", global_allocator)]
-static GLOBAL: MiMalloc = MiMalloc;
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 mod configuration;
 mod dns;
@@ -25,6 +24,8 @@ mod util;
 async fn main() {
     init_logger();
     info!("Starting Dyncloud...!");
+    let _ = v2::config::Config::init();
+
     let config = Config::init();
     let mut interval = interval(Duration::from_secs(config.update_interval_in_seconds as u64));
     let client = build_cloudflare_client(&config);
