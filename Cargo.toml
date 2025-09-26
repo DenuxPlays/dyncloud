@@ -1,14 +1,14 @@
 [package]
 name = "dyncloud"
-version = "1.5.4"
+version = "2.0.0"
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
-description = "A programm that handles updating DNS records with your current public IP address for Cloudflare."
-license = "GPL-3"
+description = "A programm that handles updating DNS records with your current public IP address."
+license = "AGPL-3"
 repository = "https://github.com/DenuxPlays/dyncloud"
 homepage = "https://github.com/DenuxPlays/dyncloud"
 readme = "README.md"
 edition = "2024"
-rust-version = "1.88.0"
+rust-version = "1.89.0"
 
 [package.metadata.wix]
 upgrade-guid = "2A41DDA9-0B62-4946-BFFC-410B38137366"
@@ -25,8 +25,11 @@ enable_mimalloc = ["mimalloc"]
 # Async runtime
 tokio = { version = "1.47.1", features = ["rt", "macros", "rt-multi-thread"] }
 
+# Scheduling
+tokio-cron-scheduler = "0.14.0"
+
 # File serialization and deserialization
-toml = "0.9.5"
+toml = "0.9.7"
 
 # Cloudflare API
 cloudflare = { version = "0.14.0", features = ["rustls-tls"], default-features = false }
@@ -36,19 +39,22 @@ log = "0.4.28"
 simple_logger = "5.0.0"
 
 # Serde
-serde = { version = "1.0.221", features = ["derive"] }
+serde = { version = "1.0.227", features = ["derive"] }
 
 # HTTP client
 reqwest = { version = "0.12.23", features = [
     "rustls-tls",
     "charset",
     "http2",
-    "macos-system-configuration"
+    "system-proxy"
 ], default-features = false }
 
 # Utils
-time = "0.3.43"
-anyhow = "1.0.99"
+time = "0.3.44"
+
+# Error handling
+thiserror = "2.0.16"
+anyhow = "1.0.100"
 
 # mimalloc
 # Replaces musl malloc since it is very slow

@@ -1,47 +1,23 @@
-# How often the script should check for changes in seconds
-update_interval_in_seconds=10
+# The cron that defines when we check for a new IP address
+cron = "* * * * *" # Every minute
 
 [[domains]]
-# The cloudflare API token that will be used to authenticate with the API
-auth_token="Your auth token here"
-# The cloudflare zone ID that will be used to identify the zone to update
-zone_id="Your zone ID here"
 
-    [[domains.records]]
-    # The cloudflare record ID that will be used to identify the record to update
-    record_id="The record ID here"
-    # ttl (time to live) for the record
-    # 1 = automatic
-    ttl=1
-    # proxied = true if the record is proxied by cloudflare
-    proxied=false
+    [domains.config.cloudflare]
+    # The cloudflare API token that will be used to authenticate with the API
+    auth_token = "auth_token"
+    # The cloudflare zone ID that will be used to identify the zone to update
+    zone_id = "zone_id"
+
+    [[domains.cloudflare]]
     # The domain name that will be updated
-    dns_name="test.example.priv"
+    name = "example.internal"
+    # ttl (time to live) for the record
+    # for cloudflare, 1 = automatic
+    ttl = 1
     # The type of record that will be updated
     # Valid values are: A, AAAA
-    dns_type="A"
-
-    [[domains.records]]
-    record_id="The record ID here"
-    ttl=1
-    proxied=false
-    dns_name="home.example.priv"
-    dns_type="A"
-
-[[domains]]
-auth_token="Your auth token here"
-zone_id="Your zone ID here"
-
-    [[domains.records]]
-    record_id="The record ID here"
-    ttl=1
-    proxied=false
-    dns_name="test.example.test"
-    dns_type="A"
-
-    [[domains.records]]
-    record_id="The record ID here"
-    ttl=1
-    proxied=false
-    dns_name="home.example.test"
-    dns_type="A"
+    # In this case, we will update both A and AAAA records (IPv4 and IPv6 respectively)
+    type = ["A", "AAAA"]
+    # (cloudflare only) proxied = true if the record is proxied by cloudflare
+    proxied = false
