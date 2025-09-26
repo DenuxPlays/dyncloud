@@ -48,7 +48,7 @@ reqwest = { version = "0.12.23", features = [
 
 # Utils
 time = "0.3.43"
-anyhow = "1.0.99"
+anyhow = "1.0.100"
 
 # mimalloc
 # Replaces musl malloc since it is very slow
