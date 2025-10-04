@@ -6,6 +6,7 @@ use crate::dns::record::{CloudflareRecord, SyncableRecord};
 use crate::ip::cache::IpCache;
 use crate::ip::resolver::IpResolver;
 use crate::ip::resolver::ipify::IpifyResolver;
+use indicatif::ProgressBar;
 use job_scheduler_ng::{Cron, Job, JobScheduler};
 use std::str::FromStr;
 use std::sync::Arc;
@@ -29,9 +30,10 @@ impl Runner {
         }
     }
 
-    pub(crate) fn sync(&self) -> Result<(), anyhow::Error> {
+    pub(crate) fn sync(&self, progress_bar: ProgressBar) -> Result<(), anyhow::Error> {
+        let progress_bar = Some(progress_bar);
         for record in &self.records {
-            record.sync()?
+            record.sync(&progress_bar)?
         }
 
         Ok(())
@@ -44,7 +46,7 @@ impl Runner {
         let cron: Cron = Cron::from_str(&self.cron)?;
         for record in self.records {
             scheduler.add(Job::new(cron.clone(), move || {
-                if let Err(err) = record.sync() {
+                if let Err(err) = record.sync(&None) {
                     error!("An error occurred while syncing records: {}", err);
 
                     std::process::exit(1);
@@ -55,7 +57,7 @@ impl Runner {
         loop {
             scheduler.tick();
 
-            sleep(Duration::from_millis(500))
+            sleep(Duration::from_millis(1_000))
         }
     }
 

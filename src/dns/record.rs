@@ -7,12 +7,12 @@ use cloudflare::endpoints::dns::dns::{
     UpdateDnsRecord, UpdateDnsRecordParams,
 };
 use cloudflare::framework::client::blocking_api::HttpApiClient;
-use std::net::{Ipv4Addr, Ipv6Addr};
+use indicatif::ProgressBar;
 use std::sync::Arc;
 use tracing::error;
 
 pub(crate) trait SyncableRecord: Send {
-    fn sync(&self) -> Result<(), Error>;
+    fn sync(&self, progress_bar: &Option<ProgressBar>) -> Result<(), Error>;
 }
 
 pub(crate) struct CloudflareRecord {
@@ -67,19 +67,10 @@ impl CloudflareRecord {
     }
 
     fn resolve_record_id(&self, dns_type: &DnsType) -> Result<String, Error> {
-        let record_type = match &dns_type {
-            DnsType::A => DnsContent::A {
-                content: Ipv4Addr::UNSPECIFIED,
-            },
-            DnsType::Aaaa => DnsContent::AAAA {
-                content: Ipv6Addr::UNSPECIFIED,
-            },
-        };
-
         let rs = self.client.request(&ListDnsRecords {
             zone_identifier: self.provider.zone_id.as_str(),
             params: ListDnsRecordsParams {
-                record_type: Some(record_type),
+                record_type: None,
                 name: Some(self.record.basic_record.name.clone()),
                 page: None,
                 per_page: None,
@@ -88,14 +79,33 @@ impl CloudflareRecord {
                 search_match: None,
             },
         })?;
+        let results: Vec<DnsRecord> = rs
+            .result
+            .into_iter()
+            .filter(|record| match (dns_type, &record.content) {
+                (
+                    DnsType::A,
+                    DnsContent::A {
+                        content: _,
+                    },
+                ) => true,
+                (
+                    DnsType::Aaaa,
+                    DnsContent::AAAA {
+                        content: _,
+                    },
+                ) => true,
+                (_, _) => false,
+            })
+            .collect();
 
-        match rs.result.len() {
+        match results.len() {
             0 => {
                 let record = self.create_new_dns_record(dns_type)?;
 
                 Ok(record.id)
             }
-            1 => Ok(rs.result[0].id.clone()),
+            1 => Ok(results[0].id.clone()),
             len => {
                 error!(
                     "DNS Search for {} resulted in more than 1 result. ({} results)",
@@ -136,9 +146,12 @@ impl CloudflareRecord {
 }
 
 impl SyncableRecord for CloudflareRecord {
-    fn sync(&self) -> Result<(), Error> {
+    fn sync(&self, progress_bar: &Option<ProgressBar>) -> Result<(), Error> {
         for dns_type in &self.record.basic_record.dns_type {
             self.sync_dns_record(dns_type)?;
+            if let Some(progress_bar) = progress_bar {
+                progress_bar.inc(1);
+            }
         }
 
         Ok(())

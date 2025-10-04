@@ -4,8 +4,9 @@ use crate::logger::init_tracing;
 use crate::runner::Runner;
 use clap::{Args, Parser, Subcommand};
 use clap_verbosity_flag::{InfoLevel, Verbosity as ClapVerbosity};
-use tracing::{error, info};
+use indicatif::ProgressBar;
 use std::path::PathBuf;
+use tracing::{error, info};
 
 #[cfg(feature = "enable_mimalloc")]
 #[cfg_attr(feature = "enable_mimalloc", global_allocator)]
@@ -78,10 +79,15 @@ fn main() {
             let records_len = config.get_total_number_of_records();
             info!("Syncing DNS {} records...", records_len);
 
+            let progress_bar = ProgressBar::new(records_len as u64);
             let runner = Runner::new(config);
-            if let Err(err) = runner.sync() {
+            if let Err(err) = runner.sync(progress_bar) {
                 error!("{}", err);
+
+                return;
             }
+
+            info!("Successfully synced {} record", records_len);
         }
         Commands::Run {
             common,
