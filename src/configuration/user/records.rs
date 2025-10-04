@@ -1,4 +1,5 @@
-use crate::configuration::v2::providers::Providers;
+use crate::configuration::user::providers::Providers;
+use crate::configuration::user::resolver::Resolver;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -8,11 +9,13 @@ pub(crate) struct RecordsGroup {
     pub(crate) providers: Providers,
     #[serde(default)]
     pub(crate) cloudflare: Vec<CloudflareRecord>,
+    #[serde(default)]
+    pub(crate) resolver: Resolver,
 }
 
 #[derive(Deserialize)]
 #[cfg_attr(test, derive(serde::Serialize))]
-pub(super) struct BasicRecord {
+pub(crate) struct BasicRecord {
     pub(crate) name: String,
     pub(crate) ttl: u32,
     #[serde(rename = "type")]
@@ -21,7 +24,7 @@ pub(super) struct BasicRecord {
 
 #[derive(Deserialize)]
 #[cfg_attr(test, derive(serde::Serialize))]
-pub(super) enum DnsType {
+pub(crate) enum DnsType {
     A,
     #[serde(rename = "AAAA")]
     Aaaa,
@@ -34,6 +37,8 @@ pub(crate) struct CloudflareRecord {
     pub(crate) basic_record: BasicRecord,
     #[serde(default = "default_proxied")]
     pub(crate) proxied: bool,
+    #[serde(default)]
+    pub(crate) id: Option<String>,
 }
 
 fn default_proxied() -> bool {

@@ -69,7 +69,7 @@
 
         <Package Id='*'
             Keywords='Installer'
-            Description='A programm that handles updating DNS records with your current public IP address for Cloudflare.'
+            Description='A programm that handles updating DNS records with your current public IP address.'
             Manufacturer='Timon Klinkert'
             InstallerVersion='450'
             Languages='1033'
