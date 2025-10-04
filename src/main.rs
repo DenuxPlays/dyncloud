@@ -1,57 +1,106 @@
-use std::time::Duration;
-
-use cloudflare::framework::client::async_api::Client;
-use log::{error, info};
-#[cfg(feature = "enable_mimalloc")]
-use mimalloc::MiMalloc;
-use tokio::time::interval;
-
-use crate::configuration::config::Config;
-use crate::configuration::domain::{Domain, Record};
-use crate::dns::updater::update_dns_record;
-use crate::ip::ip_changed::{LastIpAddresses, has_ip_changed};
-use crate::util::{build_cloudflare_client, init_logger};
+use crate::clap_utils::get_styles;
+use crate::commands::cloudflare::{handle_cloudflare_commands, CloudflareCommands};
+use crate::logger::init_tracing;
+use crate::runner::Runner;
+use clap::{Args, Parser, Subcommand};
+use clap_verbosity_flag::{InfoLevel, Verbosity as ClapVerbosity};
+use indicatif::ProgressBar;
+use std::path::PathBuf;
+use tracing::{error, info};
 
 #[cfg(feature = "enable_mimalloc")]
 #[cfg_attr(feature = "enable_mimalloc", global_allocator)]
-static GLOBAL: MiMalloc = MiMalloc;
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
+mod clap_utils;
+mod cloudflare_api;
+mod commands;
 mod configuration;
 mod dns;
+mod error;
 mod ip;
-mod util;
+mod logger;
+mod runner;
 
-#[tokio::main]
-async fn main() {
-    init_logger();
-    info!("Starting Dyncloud...!");
-    let config = Config::init();
-    let mut interval = interval(Duration::from_secs(config.update_interval_in_seconds as u64));
-    let client = build_cloudflare_client(&config);
-    let mut last_ip_addresses = LastIpAddresses::default();
-    loop {
-        for domain in &config.domains {
-            update_every_record_in_domain(&client, domain, &mut last_ip_addresses).await;
-        }
-        interval.tick().await;
-    }
+pub(crate) type Verbosity = ClapVerbosity<InfoLevel>;
+
+#[derive(Parser)]
+#[command(version, about, long_about = None, styles=get_styles())]
+pub struct CliArgs {
+    #[command(flatten)]
+    pub(crate) verbosity: Verbosity,
+
+    #[clap(subcommand)]
+    pub(crate) command: Commands,
 }
 
-async fn update_every_record_in_domain(client: &Client, domain: &Domain, last_ip_addresses: &mut LastIpAddresses) {
-    for record in &domain.records {
-        if has_ip_changed(record.dns_type, last_ip_addresses).await {
-            info!("[*] Updating record '{}' with type '{}'", &record.dns_name, &record.dns_type);
-            update_record(client, domain, record).await;
-            continue;
-        }
-    }
+#[derive(Subcommand)]
+pub(crate) enum Commands {
+    #[command(about = "Syncs all DNS Records one time.")]
+    Sync {
+        #[command(flatten)]
+        common: CommonSyncRunArgs,
+    },
+
+    #[command(about = "Starts the process that periodically syncs DNS records.")]
+    Run {
+        #[command(flatten)]
+        common: CommonSyncRunArgs,
+    },
+
+    #[command(about = "Helper commands for getting information from cloudflare")]
+    Cloudflare {
+        #[command(subcommand)]
+        command: CloudflareCommands,
+    },
 }
 
-async fn update_record(client: &Client, domain: &Domain, record: &Record) {
-    match update_dns_record(client, domain, record).await {
-        Ok(_) => info!("\t[*] Successfully updated record '{}' with type '{}'", &record.dns_name, &record.dns_type),
-        Err(e) => {
-            error!("\t[*] Failed to update record '{}' with type '{}': {:?}", &record.dns_name, &record.dns_type, e)
+#[derive(Args, Debug, Clone)]
+struct CommonSyncRunArgs {
+    #[arg(long, value_name = "FILE", help = "Path to the config file", default_value = "config.toml")]
+    config_file: PathBuf,
+}
+
+fn main() {
+    let args = CliArgs::parse();
+    init_tracing(&args.verbosity);
+
+    match args.command {
+        Commands::Cloudflare {
+            command,
+        } => handle_cloudflare_commands(command),
+        Commands::Sync {
+            common,
+        } => {
+            let config = configuration::user::config::Config::from_file(common.config_file)
+                .expect("Config file could not be parsed");
+
+            let records_len = config.get_total_number_of_records();
+            info!("Syncing DNS {} records...", records_len);
+
+            let progress_bar = ProgressBar::new(records_len as u64);
+            let runner = Runner::new(config);
+            if let Err(err) = runner.sync(progress_bar) {
+                error!("{}", err);
+
+                return;
+            }
+
+            info!("Successfully synced {} record", records_len);
+        }
+        Commands::Run {
+            common,
+        } => {
+            let config = configuration::user::config::Config::from_file(common.config_file)
+                .expect("Config file could not be parsed");
+
+            let records_len = config.get_total_number_of_records();
+            info!("Running DNS sync for {} records...", records_len);
+
+            let runner = Runner::new(config);
+            if let Err(err) = runner.run() {
+                error!("{}", err);
+            }
         }
     }
 }

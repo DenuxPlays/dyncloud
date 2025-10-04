@@ -1,4 +1,4 @@
-FROM rust:1.89.0-alpine3.22 AS builder
+FROM rust:1.90.0-alpine3.22 AS builder
 
 RUN apk add --no-cache \
     musl-dev \
@@ -8,7 +8,7 @@ RUN apk add --no-cache \
 WORKDIR /usr/src/dyncloud
 COPY . .
 
-RUN cargo build --release --features "mimalloc"
+RUN cargo build --release --features "enable_mimalloc"
 
 # Final stage: create a minimal runtime image
 FROM alpine:3.22.1
@@ -37,5 +37,6 @@ COPY --from=builder --chown=${UID}:${GUID} --chmod=+x /usr/src/dyncloud/target/r
 # Switch to non-root user
 USER ${USER_NAME}
 
-# Entrypoint command
 ENTRYPOINT ["/home/dyncloud/dyncloud"]
+
+CMD ["run"]
