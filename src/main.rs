@@ -1,5 +1,5 @@
 use crate::clap_utils::get_styles;
-use crate::commands::cloudflare::{CloudflareCommands, handle_cloudflare_commands};
+use crate::commands::cloudflare::{handle_cloudflare_commands, CloudflareCommands};
 use crate::logger::init_tracing;
 use crate::runner::Runner;
 use clap::{Args, Parser, Subcommand};
@@ -72,7 +72,6 @@ fn main() {
         Commands::Sync {
             common,
         } => {
-            // TODO: add progress bar
             let config = configuration::user::config::Config::from_file(common.config_file)
                 .expect("Config file could not be parsed");
 

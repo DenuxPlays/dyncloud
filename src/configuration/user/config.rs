@@ -67,7 +67,7 @@ mod tests {
 
     #[test]
     fn can_parse_dist_config() {
-        const DIST_PATH: &str = "./config.toml.dist";
+        const DIST_PATH: &str = "./config.dist.toml";
         let path = PathBuf::from(DIST_PATH);
 
         let config = Config::from_file(path);
