@@ -1,5 +1,5 @@
 use crate::clap_utils::get_styles;
-use crate::commands::cloudflare::{handle_cloudflare_commands, CloudflareCommands};
+use crate::commands::cloudflare::{CloudflareCommands, handle_cloudflare_commands};
 use crate::logger::init_tracing;
 use crate::runner::Runner;
 use clap::{Args, Parser, Subcommand};
@@ -79,7 +79,7 @@ fn main() {
             info!("Syncing DNS {} records...", records_len);
 
             let progress_bar = ProgressBar::new(records_len as u64);
-            let runner = Runner::new(config);
+            let mut runner = Runner::new(config);
             if let Err(err) = runner.sync(progress_bar) {
                 error!("{}", err);
 

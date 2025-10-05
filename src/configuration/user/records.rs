@@ -22,7 +22,7 @@ pub(crate) struct BasicRecord {
     pub(crate) dns_type: Vec<DnsType>,
 }
 
-#[derive(Deserialize)]
+#[derive(Eq, PartialEq, Hash, Copy, Clone, Deserialize)]
 #[cfg_attr(test, derive(serde::Serialize))]
 pub(crate) enum DnsType {
     A,
@@ -37,8 +37,6 @@ pub(crate) struct CloudflareRecord {
     pub(crate) basic_record: BasicRecord,
     #[serde(default = "default_proxied")]
     pub(crate) proxied: bool,
-    #[serde(default)]
-    pub(crate) id: Option<String>,
 }
 
 fn default_proxied() -> bool {

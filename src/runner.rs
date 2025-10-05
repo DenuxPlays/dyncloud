@@ -30,9 +30,9 @@ impl Runner {
         }
     }
 
-    pub(crate) fn sync(&self, progress_bar: ProgressBar) -> Result<(), anyhow::Error> {
+    pub(crate) fn sync(&mut self, progress_bar: ProgressBar) -> Result<(), anyhow::Error> {
         let progress_bar = Some(progress_bar);
-        for record in &self.records {
+        for record in &mut self.records {
             record.sync(&progress_bar)?
         }
 
@@ -44,7 +44,7 @@ impl Runner {
         let mut scheduler = JobScheduler::new();
 
         let cron: Cron = Cron::from_str(&self.cron)?;
-        for record in self.records {
+        for mut record in self.records {
             scheduler.add(Job::new(cron.clone(), move || {
                 if let Err(err) = record.sync(&None) {
                     error!("An error occurred while syncing records: {}", err);

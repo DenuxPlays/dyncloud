@@ -975,7 +975,7 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 [[package]]
 name = "job_scheduler_ng"
 version = "2.3.0"
-source = "git+https://github.com/DenuxPlays/job_scheduler.git?branch=feature%2Fcroner#2a99a6b9a7ccb09c04fc5fe719fda8a2557a4eef"
+source = "git+https://github.com/DenuxPlays/job_scheduler.git?branch=feature%2Fcroner#6c86ada58dee71bf45534f74f8fc1eeb44112163"
 dependencies = [
  "chrono",
  "croner",
@@ -1330,9 +1330,9 @@ dependencies = [
 
 [[package]]
 name = "redox_syscall"
-version = "0.5.17"
+version = "0.5.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5407465600fb0548f1442edf71dd20683c6ed326200ace4b1ef0763521bb3b77"
+checksum = "ed2bf2547551a7053d6fdfafda3f938979645c44812fbfcda098faae3f1a362d"
 dependencies = [
  "bitflags",
 ]

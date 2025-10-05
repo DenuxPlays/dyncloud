@@ -50,7 +50,6 @@ mod tests {
                     dns_type: dns_types,
                 },
                 proxied: false,
-                id: None,
             }
         }
 
