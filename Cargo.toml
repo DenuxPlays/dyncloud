@@ -1,7 +1,6 @@
 [package]
 name = "dyncloud"
 version = "2.0.0"
-authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
 description = "A programm that handles updating DNS records with your current public IP address."
 license = "AGPL-3"
 repository = "https://github.com/DenuxPlays/dyncloud"
@@ -15,10 +14,20 @@ path-guid = "EAD2959B-66EC-4A95-BC27-3DF7E4057C47"
 license = false
 eula = false
 
+[lints.rust]
+# Forbid
+unsafe_code = "forbid"
+non_ascii_idents = "forbid"
+
+[lints.clippy]
+# Deny
+unwrap_used = "deny"
+expect_used = "deny"
+
 [features]
 # Enable mimalloc memory allocator to replace the default malloc
 # This can improve performance for Alpine builds
-enable_mimalloc = ["mimalloc"]
+mimalloc = ["dep:mimalloc"]
 
 [dependencies]
 # CLI
@@ -31,10 +40,13 @@ comfy-table = "7.2.1"
 indicatif = "0.18.0"
 
 # Scheduling
-job_scheduler_ng = { git = "https://github.com/DenuxPlays/job_scheduler.git", branch = "feature/croner" }
+job_scheduler_ng = { git = "https://github.com/DenuxPlays/job_scheduler.git", branch = "feature/croner", default-features = false, features = ["croner"] }
 
 # File serialization and deserialization
 toml = "0.9.7"
+
+# Validation
+validator = { version = "0.20.0", features = ["derive"] }
 
 # Cloudflare API
 cloudflare = { version = "0.14.0", features = ["rustls-tls", "blocking"], default-features = false }

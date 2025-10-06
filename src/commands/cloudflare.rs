@@ -2,39 +2,47 @@ use crate::cloudflare_api::build_cloudflare_client;
 use clap::Subcommand;
 use cloudflare::endpoints::zones::zone::ListZones;
 use cloudflare::framework::client::blocking_api::HttpApiClient;
+use cloudflare::framework::response::ApiFailure;
 use comfy_table::Table;
 use comfy_table::presets::UTF8_FULL;
+use thiserror::Error;
 use tracing::info;
 
 #[derive(Subcommand)]
 pub(crate) enum CloudflareCommands {
     #[command(name = "listZones", about = "List all of your cloudflare zones")]
     ListZones {
-        #[arg(short, long)]
+        #[arg(value_name = "AUTH_TOKEN", help = "Cloudflare API token")]
         auth_token: String,
     },
 }
 
-pub(crate) fn handle_cloudflare_commands(command: CloudflareCommands) {
+#[derive(Debug, Error)]
+pub(crate) enum CloudflareCommandError {
+    #[error(transparent)]
+    ApiFailure(#[from] ApiFailure),
+}
+
+pub(crate) fn handle_cloudflare_commands(command: CloudflareCommands) -> Result<(), CloudflareCommandError> {
     match command {
         CloudflareCommands::ListZones {
             auth_token,
         } => {
             let client = build_cloudflare_client(auth_token);
-            list_all_zones(&client)
+            list_all_zones(&client)?;
         }
     }
+
+    Ok(())
 }
 
-fn list_all_zones(client: &HttpApiClient) {
+fn list_all_zones(client: &HttpApiClient) -> Result<(), CloudflareCommandError> {
     info!("Requesting all of your zones from Cloudflare.\n");
 
     // TODO: add special  handling for invalid API Token & Not correct rights api token
-    let response = client
-        .request(&ListZones {
-            params: Default::default(),
-        })
-        .expect("Listing zones failed");
+    let response = client.request(&ListZones {
+        params: Default::default(),
+    })?;
 
     let mut table = Table::new();
     table.load_preset(UTF8_FULL);
@@ -44,4 +52,6 @@ fn list_all_zones(client: &HttpApiClient) {
     }
 
     println!("{}", table);
+
+    Ok(())
 }

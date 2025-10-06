@@ -1,15 +1,18 @@
 use crate::clap_utils::get_styles;
 use crate::commands::cloudflare::{CloudflareCommands, handle_cloudflare_commands};
+use crate::error::ApplicationError;
 use crate::logger::init_tracing;
 use crate::runner::Runner;
 use clap::{Args, Parser, Subcommand};
 use clap_verbosity_flag::{InfoLevel, Verbosity as ClapVerbosity};
+use configuration::user::config::Config;
 use indicatif::ProgressBar;
 use std::path::PathBuf;
 use tracing::{error, info};
+use validator::Validate;
 
-#[cfg(feature = "enable_mimalloc")]
-#[cfg_attr(feature = "enable_mimalloc", global_allocator)]
+#[cfg(feature = "mimalloc")]
+#[cfg_attr(feature = "mimalloc", global_allocator)]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 mod clap_utils;
@@ -26,7 +29,7 @@ pub(crate) type Verbosity = ClapVerbosity<InfoLevel>;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None, styles=get_styles())]
-pub struct CliArgs {
+pub(crate) struct CliArgs {
     #[command(flatten)]
     pub(crate) verbosity: Verbosity,
 
@@ -61,19 +64,19 @@ struct CommonSyncRunArgs {
     config_file: PathBuf,
 }
 
-fn main() {
+fn main() -> Result<(), ApplicationError> {
     let args = CliArgs::parse();
     init_tracing(&args.verbosity);
 
     match args.command {
         Commands::Cloudflare {
             command,
-        } => handle_cloudflare_commands(command),
+        } => handle_cloudflare_commands(command)?,
         Commands::Sync {
             common,
         } => {
-            let config = configuration::user::config::Config::from_file(common.config_file)
-                .expect("Config file could not be parsed");
+            let config = Config::from_file(common.config_file)?;
+            config.validate()?;
 
             let records_len = config.get_total_number_of_records();
             info!("Syncing DNS {} records...", records_len);
@@ -83,7 +86,7 @@ fn main() {
             if let Err(err) = runner.sync(progress_bar) {
                 error!("{}", err);
 
-                return;
+                return Ok(());
             }
 
             info!("Successfully synced {} record", records_len);
@@ -91,8 +94,8 @@ fn main() {
         Commands::Run {
             common,
         } => {
-            let config = configuration::user::config::Config::from_file(common.config_file)
-                .expect("Config file could not be parsed");
+            let config = Config::from_file(common.config_file)?;
+            config.validate()?;
 
             let records_len = config.get_total_number_of_records();
             info!("Running DNS sync for {} records...", records_len);
@@ -103,4 +106,6 @@ fn main() {
             }
         }
     }
+
+    Ok(())
 }

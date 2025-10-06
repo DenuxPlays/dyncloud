@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 #[cfg_attr(test, derive(serde::Serialize))]
 pub(crate) enum Resolver {
     Ipfiy,

@@ -8,27 +8,30 @@ pub(crate) struct IpCache {
 }
 
 impl IpCache {
-    pub fn new(ttl: u64) -> Self {
+    pub(crate) fn new(ttl: u64) -> Self {
         Self {
             ttl,
             inner: Default::default(),
         }
     }
 
-    pub fn set_ipv4addr(&self, ipv4addr: Ipv4Addr) {
-        let mut inner = self.inner.write().expect("ip cache poisoned");
+    pub(crate) fn set_ipv4addr(&self, ipv4addr: Ipv4Addr) {
+        #[allow(clippy::expect_used)]
+        let mut inner = self.inner.write().expect("IP cache poisoned");
         inner.ipv4addr = Some(ipv4addr);
         inner.ipv4_last_update = Some(Instant::now());
     }
 
-    pub fn set_ipv6addr(&self, ipv6addr: Ipv6Addr) {
-        let mut inner = self.inner.write().expect("ip cache poisoned");
+    pub(crate) fn set_ipv6addr(&self, ipv6addr: Ipv6Addr) {
+        #[allow(clippy::expect_used)]
+        let mut inner = self.inner.write().expect("IP cache poisoned");
         inner.ipv6addr = Some(ipv6addr);
         inner.ipv6_last_update = Some(Instant::now());
     }
 
-    pub fn get_ipv4addr(&self) -> Option<Ipv4Addr> {
-        let inner = self.inner.read().expect("ip cache poisoned");
+    pub(crate) fn get_ipv4addr(&self) -> Option<Ipv4Addr> {
+        #[allow(clippy::expect_used)]
+        let inner = self.inner.read().expect("IP cache poisoned");
         match inner.ipv4_last_update {
             None => None,
             Some(time) => {
@@ -41,8 +44,9 @@ impl IpCache {
         }
     }
 
-    pub fn get_ipv6addr(&self) -> Option<Ipv6Addr> {
-        let inner = self.inner.read().expect("ip cache poisoned");
+    pub(crate) fn get_ipv6addr(&self) -> Option<Ipv6Addr> {
+        #[allow(clippy::expect_used)]
+        let inner = self.inner.read().expect("IP cache poisoned");
         match inner.ipv6_last_update {
             None => None,
             Some(time) => {

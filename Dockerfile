@@ -8,7 +8,7 @@ RUN apk add --no-cache \
 WORKDIR /usr/src/dyncloud
 COPY . .
 
-RUN cargo build --release --features "enable_mimalloc"
+RUN cargo build --release --features "mimalloc"
 
 # Final stage: create a minimal runtime image
 FROM alpine:3.22.1

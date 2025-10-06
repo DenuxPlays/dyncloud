@@ -68,15 +68,17 @@ impl Runner {
 
         for group in config.records {
             let resolver = Self::build_resolver(&group, ip_cache.clone());
-            let provider = Arc::new(group.providers.cloudflare.unwrap());
-            let client = Arc::new(build_cloudflare_client(provider.auth_token.clone()));
-            for record in group.cloudflare {
-                cf_records.push(Box::new(CloudflareRecord::new(
-                    resolver.clone(),
-                    client.clone(),
-                    provider.clone(),
-                    record,
-                )));
+            if let Some(provider) = group.providers.cloudflare {
+                let provider = Arc::new(provider);
+                let client = Arc::new(build_cloudflare_client(provider.auth_token.clone()));
+                for record in group.cloudflare {
+                    cf_records.push(Box::new(CloudflareRecord::new(
+                        resolver.clone(),
+                        client.clone(),
+                        provider.clone(),
+                        record,
+                    )));
+                }
             }
         }
 

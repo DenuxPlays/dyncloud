@@ -8,7 +8,7 @@ use std::sync::Arc;
 const IPIFY_V4_URL: &str = "https://api.ipify.org";
 const IPIFY_V6_URL: &str = "https://api6.ipify.org";
 
-pub struct IpifyResolver {
+pub(crate) struct IpifyResolver {
     cache: Arc<IpCache>,
     client: Client,
     ipv4_url: &'static str,
@@ -16,7 +16,7 @@ pub struct IpifyResolver {
 }
 
 impl IpifyResolver {
-    pub fn new(cache: Arc<IpCache>, client: Client, ipv4_url: &'static str, ipv6_url: &'static str) -> Self {
+    pub(crate) fn new(cache: Arc<IpCache>, client: Client, ipv4_url: &'static str, ipv6_url: &'static str) -> Self {
         Self {
             cache,
             client,

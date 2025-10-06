@@ -1,14 +1,18 @@
 use crate::configuration::user::error::ConfigError;
 use crate::configuration::user::records::RecordsGroup;
+use crate::configuration::validation::cron::validate_cron_expression;
 use serde::Deserialize;
 use std::path::PathBuf;
+use validator::Validate;
 
 // TODO: add validation
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize, Validate)]
 #[cfg_attr(test, derive(serde::Serialize))]
 pub(crate) struct Config {
+    #[validate(custom(function = "validate_cron_expression"))]
     pub(crate) cron: String,
     #[serde(rename = "domains")]
+    #[validate(nested)]
     pub(crate) records: Vec<RecordsGroup>,
 }
 
