@@ -14,7 +14,7 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
-## Version 1.5.3 (12.09.2025)
+## Version 1.5.4 (12.09.2025)
 
 ### Changed
 
