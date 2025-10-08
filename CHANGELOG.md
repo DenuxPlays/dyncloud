@@ -14,7 +14,7 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
-## Unreleased
+## Version 2.0.0-alpha.1 (09.10.2025)
 
 ### Breaking
 
@@ -28,6 +28,7 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 - Get Cloudflare Record by DNSType and Name [#107](https://github.com/DenuxPlays/dyncloud/issues/107)
 - Added utility command to list cloudflare zones
 - Added command to sync records just one time
+- support for Windows arm64
 
 ### Changed
 
