@@ -1,6 +1,6 @@
 use crate::clap_utils::get_styles;
 use crate::commands::cloudflare::{CloudflareCommands, handle_cloudflare_commands};
-use crate::error::ApplicationError;
+use crate::error::{ApplicationError, print_validation_errors};
 use crate::logger::init_tracing;
 use crate::runner::Runner;
 use clap::{Args, Parser, Subcommand};
@@ -64,10 +64,22 @@ struct CommonSyncRunArgs {
     config_file: PathBuf,
 }
 
-fn main() -> Result<(), ApplicationError> {
+fn main() {
     let args = CliArgs::parse();
     init_tracing(&args.verbosity);
 
+    if let Err(err) = run_command(args) {
+        if let ApplicationError::ValidationErrors(errors) = err {
+            print_validation_errors(&errors);
+        } else {
+            error!("{}", err);
+        }
+
+        std::process::exit(1);
+    }
+}
+
+fn run_command(args: CliArgs) -> Result<(), ApplicationError> {
     match args.command {
         Commands::Cloudflare {
             command,
