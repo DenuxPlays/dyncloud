@@ -1,2 +1,1 @@
-pub mod updater;
-pub mod util;
+pub(crate) mod record;
