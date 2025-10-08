@@ -39,7 +39,6 @@ pub(crate) fn handle_cloudflare_commands(command: CloudflareCommands) -> Result<
 fn list_all_zones(client: &HttpApiClient) -> Result<(), CloudflareCommandError> {
     info!("Requesting all of your zones from Cloudflare.\n");
 
-    // TODO: add special  handling for invalid API Token & Not correct rights api token
     let response = client.request(&ListZones {
         params: Default::default(),
     })?;

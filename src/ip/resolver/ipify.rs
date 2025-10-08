@@ -11,12 +11,12 @@ const IPIFY_V6_URL: &str = "https://api6.ipify.org";
 pub(crate) struct IpifyResolver {
     cache: Arc<IpCache>,
     client: Client,
-    ipv4_url: &'static str,
-    ipv6_url: &'static str,
+    ipv4_url: String,
+    ipv6_url: String,
 }
 
 impl IpifyResolver {
-    pub(crate) fn new(cache: Arc<IpCache>, client: Client, ipv4_url: &'static str, ipv6_url: &'static str) -> Self {
+    pub(crate) fn new(cache: Arc<IpCache>, client: Client, ipv4_url: String, ipv6_url: String) -> Self {
         Self {
             cache,
             client,
@@ -26,11 +26,11 @@ impl IpifyResolver {
     }
 
     pub(crate) fn from_ip_cache(cache: Arc<IpCache>) -> Self {
-        Self::new(cache, Client::new(), IPIFY_V4_URL, IPIFY_V6_URL)
+        Self::new(cache, Client::new(), IPIFY_V4_URL.to_string(), IPIFY_V6_URL.to_string())
     }
 
     pub(crate) fn resolve_ipv4_address(&self) -> Result<Ipv4Addr, Error> {
-        let ip = self.client.get(self.ipv4_url).send()?.text()?;
+        let ip = self.client.get(self.ipv4_url.as_str()).send()?.text()?;
         let ip = ip.parse::<Ipv4Addr>()?;
         self.cache.set_ipv4addr(ip);
 
@@ -38,7 +38,7 @@ impl IpifyResolver {
     }
 
     pub(crate) fn resolve_ipv6_address(&self) -> Result<Ipv6Addr, Error> {
-        let ip = self.client.get(self.ipv6_url).send()?.text()?;
+        let ip = self.client.get(self.ipv6_url.as_str()).send()?.text()?;
         let ip = ip.parse::<Ipv6Addr>()?;
         self.cache.set_ipv6addr(ip);
 

@@ -80,6 +80,13 @@ anyhow = "1.0.100"
 # Replaces musl malloc since it is very slow
 mimalloc = { version = "0.1.48", optional = true, features = ["v3"] }
 
+[dev-dependencies]
+# Mocking APIs
+mockito = "1.7.0"
+
+# JSON
+serde_json = "1.0.145"
+
 # The profile that 'cargo dist' will build with
 [profile.dist]
 inherits = "release"
