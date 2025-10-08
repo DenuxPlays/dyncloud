@@ -36,7 +36,7 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 - The Docker Image can now be used as a standalone CLI
 - updated rust to 1.90.0
 
-## Version 1.5.3 (12.09.2025)
+## Version 1.5.4 (12.09.2025)
 
 ### Changed
 
