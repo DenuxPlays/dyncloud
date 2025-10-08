@@ -10,7 +10,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  GHRC_REPO: ghcr.io/${{ github.repository }}
+  GHCR_REPO: ghcr.io/${{ github.repository }}
 
 jobs:
   build:
