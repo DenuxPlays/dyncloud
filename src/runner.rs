@@ -1,3 +1,4 @@
+use crate::clock::get_system_timezone_offset;
 use crate::cloudflare_api::build_cloudflare_client;
 use crate::configuration::user::config::Config;
 use crate::configuration::user::records::RecordsGroup;
@@ -39,9 +40,9 @@ impl Runner {
         Ok(())
     }
 
-    // TODO: add custom timezone support
     pub(crate) fn run(self) -> Result<(), anyhow::Error> {
         let mut scheduler = JobScheduler::new();
+        scheduler.set_timezone(get_system_timezone_offset());
 
         let cron: Cron = Cron::from_str(&self.cron)?;
         for mut record in self.records {

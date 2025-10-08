@@ -16,6 +16,7 @@ use validator::Validate;
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 mod clap_utils;
+mod clock;
 mod cloudflare_api;
 mod commands;
 mod configuration;
