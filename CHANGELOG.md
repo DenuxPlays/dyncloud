@@ -14,6 +14,27 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
+## Unreleased
+
+### Breaking
+
+- Convert dyncloud to a CLI
+- Updated Config format: See migration guide for further instructions
+- Replace interval with cron expression [#136](https://github.com/DenuxPlays/dyncloud/issues/136)
+
+### Added
+
+- Added proper Config validation with user-friendly output
+- Get Cloudflare Record by DNSType and Name [#107](https://github.com/DenuxPlays/dyncloud/issues/107)
+- Added utility command to list cloudflare zones
+- Added command to sync records just one time
+
+### Changed
+
+- Log errors instead of crashing [#108](https://github.com/DenuxPlays/dyncloud/issues/108)
+- The Docker Image can now be used as a standalone CLI
+- updated rust to 1.90.0
+
 ## Version 1.5.3 (12.09.2025)
 
 ### Changed
