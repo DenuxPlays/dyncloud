@@ -11,12 +11,12 @@
 
 ## Usage
 
-The [config.toml.dist](config.dist.toml) is filled with example values. Copy it to `config.toml` and fill in your
+The [config.dist.toml](config.dist.toml) is filled with example values. Copy it to `config.toml` and fill in your
 values.  
 **Remove anything you don't need.**
 
 1. create a config file `config.toml` in the same directory as the executable. (
-   see [config.toml.dist](config.dist.toml))
+   see [config.dist.toml](config.dist.toml))
 2. update the values in the config file
 3. run the executable
     - all necessary DNS records will be created if they don't exist
