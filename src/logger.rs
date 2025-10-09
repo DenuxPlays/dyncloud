@@ -8,7 +8,6 @@ use tracing_subscriber::fmt::format::Writer;
 pub(crate) fn init_tracing(verbosity: &Verbosity) {
     tracing_subscriber::fmt()
         .with_max_level(verbosity.filter())
-        .without_time()
         .with_target(false)
         .event_format(OnlyMessageFormatter)
         .init();
