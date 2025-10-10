@@ -14,6 +14,17 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
+## Version 2.0.0-alpha.5 (Unreleased)
+
+### Added
+
+- Added IPv6 docker compose config example
+
+### Changed
+
+- added timestamp to log messages
+- renamed `compose.yaml.dist` to `compose.dist.yaml`
+
 ## Version 2.0.0-alpha.1 (09.10.2025)
 
 ### Breaking

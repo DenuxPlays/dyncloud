@@ -2,6 +2,9 @@
 cron = "* * * * *" # Every minute
 
 [[domains]]
+    # The following section is focussing on the Ip Resolver.
+    # The default is "Ipify", which works on all platforms. But is currently the only option.
+    # resolver = "Ipfiy"
 
     [domains.config.cloudflare]
     # The cloudflare API token that will be used to authenticate with the API
