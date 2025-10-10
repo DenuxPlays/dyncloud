@@ -1,13 +1,15 @@
 use crate::clap_utils::get_styles;
 use crate::commands::cloudflare::{CloudflareCommands, handle_cloudflare_commands};
 use crate::error::{ApplicationError, print_validation_errors};
-use crate::logger::init_tracing;
+use crate::io_helper::CliWriter;
+use crate::logger::init_logging;
 use crate::runner::Runner;
 use clap::{Args, Parser, Subcommand};
 use clap_verbosity_flag::{InfoLevel, Verbosity as ClapVerbosity};
 use configuration::user::config::Config;
 use indicatif::ProgressBar;
 use std::path::PathBuf;
+use std::sync::Arc;
 use tracing::{error, info};
 use validator::Validate;
 
@@ -22,6 +24,7 @@ mod commands;
 mod configuration;
 mod dns;
 mod error;
+mod io_helper;
 mod ip;
 mod logger;
 mod runner;
@@ -36,6 +39,9 @@ pub(crate) struct CliArgs {
 
     #[clap(subcommand)]
     pub(crate) command: Commands,
+
+    #[arg(long, short = 'd', global = true, help = "Enables debug logging", default_value_t = false)]
+    pub(crate) debug: bool,
 }
 
 #[derive(Subcommand)]
@@ -67,24 +73,24 @@ struct CommonSyncRunArgs {
 
 fn main() {
     let args = CliArgs::parse();
-    init_tracing(&args.verbosity);
+    let writer = Arc::new(init_logging(&args.verbosity, args.debug));
 
-    if let Err(err) = run_command(args) {
+    if let Err(err) = run_command(args, &writer) {
         if let ApplicationError::ValidationErrors(errors) = err {
             print_validation_errors(&errors);
         } else {
-            error!("{}", err);
+            writer.error(format!("{}", err));
         }
 
         std::process::exit(1);
     }
 }
 
-fn run_command(args: CliArgs) -> Result<(), ApplicationError> {
+fn run_command(args: CliArgs, writer: &Arc<CliWriter>) -> Result<(), ApplicationError> {
     match args.command {
         Commands::Cloudflare {
             command,
-        } => handle_cloudflare_commands(command)?,
+        } => handle_cloudflare_commands(command, writer)?,
         Commands::Sync {
             common,
         } => {
@@ -92,17 +98,17 @@ fn run_command(args: CliArgs) -> Result<(), ApplicationError> {
             config.validate()?;
 
             let records_len = config.get_total_number_of_records();
-            info!("Syncing DNS {} records...", records_len);
+            writer.info(format!("Syncing DNS {} records...", records_len));
 
             let progress_bar = ProgressBar::new(records_len as u64);
-            let mut runner = Runner::new(config);
+            let mut runner = Runner::new(config, writer);
             if let Err(err) = runner.sync(progress_bar) {
-                error!("{}", err);
+                writer.error(format!("{}", err));
 
                 return Ok(());
             }
 
-            info!("Successfully synced {} record", records_len);
+            writer.success(format!("Successfully synced {} record", records_len));
         }
         Commands::Run {
             common,
@@ -113,7 +119,7 @@ fn run_command(args: CliArgs) -> Result<(), ApplicationError> {
             let records_len = config.get_total_number_of_records();
             info!("Running DNS sync for {} records...", records_len);
 
-            let runner = Runner::new(config);
+            let runner = Runner::new(config, writer);
             if let Err(err) = runner.run() {
                 error!("{}", err);
             }

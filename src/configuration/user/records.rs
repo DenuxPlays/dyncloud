@@ -2,6 +2,7 @@ use crate::configuration::user::providers::Providers;
 use crate::configuration::user::resolver::Resolver;
 use crate::configuration::validation::records_group::validate_record_groups_schema;
 use serde::{Deserialize, Serialize};
+use std::fmt::Display;
 use validator::Validate;
 
 #[derive(Debug, Deserialize, Validate)]
@@ -34,6 +35,15 @@ pub(crate) enum DnsType {
     A,
     #[serde(rename = "AAAA")]
     Aaaa,
+}
+
+impl Display for DnsType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            DnsType::A => write!(f, "A"),
+            DnsType::Aaaa => write!(f, "AAAA"),
+        }
+    }
 }
 
 #[derive(Debug, Deserialize, Validate)]

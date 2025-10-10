@@ -1,41 +1,47 @@
 use crate::Verbosity;
-use anstyle::{AnsiColor, Style};
-use tracing::Level;
-use tracing_subscriber::fmt;
-use tracing_subscriber::fmt::FormatFields;
-use tracing_subscriber::fmt::format::Writer;
+use crate::io_helper::CliWriter;
+use clap_verbosity_flag::VerbosityFilter;
+use tracing::metadata::LevelFilter;
 
-pub(crate) fn init_tracing(verbosity: &Verbosity) {
-    tracing_subscriber::fmt()
-        .with_max_level(verbosity.filter())
-        .with_target(false)
-        .event_format(OnlyMessageFormatter)
-        .init();
+pub(crate) fn init_logging(verbosity: &Verbosity, debug: bool) -> CliWriter {
+    let state = State::from_verbosity_and_debug_flag(verbosity, debug);
+    let level_filter = calculate_level_filter(state);
+
+    init_tracing(level_filter);
+
+    CliWriter::new(verbosity)
 }
 
-struct OnlyMessageFormatter;
+pub(crate) fn init_tracing(filter: impl Into<LevelFilter>) {
+    tracing_subscriber::fmt().with_max_level(filter).init();
+}
 
-impl<S, N> fmt::FormatEvent<S, N> for OnlyMessageFormatter
-where
-    S: tracing::Subscriber + for<'a> tracing_subscriber::registry::LookupSpan<'a>,
-    N: for<'a> FormatFields<'a> + 'static,
-{
-    fn format_event(
-        &self,
-        ctx: &fmt::FmtContext<'_, S, N>,
-        mut writer: Writer<'_>,
-        event: &tracing::Event<'_>,
-    ) -> std::fmt::Result {
-        let style = match *event.metadata().level() {
-            Level::ERROR => Style::new().fg_color(Some(AnsiColor::Red.into())).bold(),
-            Level::WARN => Style::new().fg_color(Some(AnsiColor::Yellow.into())).bold(),
-            Level::INFO => Style::new().fg_color(Some(AnsiColor::Green.into())),
-            Level::DEBUG => Style::new().fg_color(Some(AnsiColor::Blue.into())),
-            Level::TRACE => Style::new().fg_color(Some(AnsiColor::Magenta.into())),
-        };
+pub(crate) fn calculate_level_filter(state: State) -> LevelFilter {
+    match state {
+        State::Silent => LevelFilter::ERROR,
+        State::Debug => LevelFilter::DEBUG,
+        State::Normal => LevelFilter::INFO,
+        State::Warn => LevelFilter::WARN,
+    }
+}
 
-        write!(writer, "{}", style.render())?;
-        ctx.format_fields(writer.by_ref(), event)?;
-        writeln!(writer, "{}", style.render_reset())
+pub(crate) enum State {
+    Silent,
+    Normal,
+    Warn,
+    Debug,
+}
+
+impl State {
+    pub(crate) fn from_verbosity_and_debug_flag(verbosity: &Verbosity, debug: bool) -> Self {
+        if debug {
+            return Self::Debug;
+        }
+
+        match verbosity.filter() {
+            VerbosityFilter::Off | VerbosityFilter::Error => Self::Silent,
+            VerbosityFilter::Warn => Self::Warn,
+            _ => Self::Normal,
+        }
     }
 }
