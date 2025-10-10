@@ -14,6 +14,17 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
+## Version 2.0.0-alpha.5 (10.10.2025)
+
+### Added
+
+- `--debug`/`-d` flag to enable debug logging
+
+### Changed
+
+- updated dependencies
+- introduced custom logger
+
 ## Version 2.0.0-alpha.1 (09.10.2025)
 
 ### Breaking
