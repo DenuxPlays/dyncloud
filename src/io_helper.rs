@@ -2,12 +2,17 @@ use crate::Verbosity;
 use anstyle::{AnsiColor, Color, Style};
 use clap_verbosity_flag::VerbosityFilter;
 
-const TRACE_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Magenta)));
+// const TRACE_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Magenta)));
 const DEBUG_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Blue)));
 const INFO_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Green)));
-const WARN_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Yellow))).bold();
+const SUCCESS_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Cyan))).bold();
+// const WARN_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Yellow))).bold();
 const ERROR_STYLE: Style = Style::new().fg_color(Some(Color::Ansi(AnsiColor::Red))).bold();
 
+/**
+The CliWriter is a kind of simple logger that writes styled messages to the command line interface (CLI).
+*/
+#[derive(Debug, Copy, Clone)]
 pub(crate) struct CliWriter {
     filter_u8: u8,
 }
@@ -19,9 +24,9 @@ impl CliWriter {
         }
     }
 
-    pub(crate) fn trace(&self, message: impl AsRef<str>) {
-        self.write(message, &VerbosityFilter::Trace, &TRACE_STYLE);
-    }
+    // pub(crate) fn trace(&self, message: impl AsRef<str>) {
+    //     self.write(message, &VerbosityFilter::Trace, &TRACE_STYLE);
+    // }
 
     pub(crate) fn debug(&self, message: impl AsRef<str>) {
         self.write(message, &VerbosityFilter::Debug, &DEBUG_STYLE);
@@ -31,9 +36,13 @@ impl CliWriter {
         self.write(message, &VerbosityFilter::Info, &INFO_STYLE);
     }
 
-    pub(crate) fn warn(&self, message: impl AsRef<str>) {
-        self.write(message, &VerbosityFilter::Warn, &WARN_STYLE);
+    pub(crate) fn success(&self, message: impl AsRef<str>) {
+        self.write(message, &VerbosityFilter::Info, &SUCCESS_STYLE);
     }
+
+    // pub(crate) fn warn(&self, message: impl AsRef<str>) {
+    //     self.write(message, &VerbosityFilter::Warn, &WARN_STYLE);
+    // }
 
     pub(crate) fn error(&self, message: impl AsRef<str>) {
         self.write(message, &VerbosityFilter::Error, &ERROR_STYLE);

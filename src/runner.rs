@@ -4,6 +4,7 @@ use crate::configuration::user::config::Config;
 use crate::configuration::user::records::RecordsGroup;
 use crate::configuration::user::resolver::Resolver;
 use crate::dns::record::{CloudflareRecord, SyncableRecord};
+use crate::io_helper::CliWriter;
 use crate::ip::cache::IpCache;
 use crate::ip::resolver::IpResolver;
 use crate::ip::resolver::ipify::IpifyResolver;
@@ -21,9 +22,9 @@ pub(crate) struct Runner {
 }
 
 impl Runner {
-    pub(crate) fn new(config: Config) -> Self {
+    pub(crate) fn new(config: Config, writer: &Arc<CliWriter>) -> Self {
         let cron = config.cron.clone();
-        let records = Self::build_records(config);
+        let records = Self::build_records(config, writer);
 
         Self {
             records,
@@ -49,8 +50,6 @@ impl Runner {
             scheduler.add(Job::new(cron.clone(), move || {
                 if let Err(err) = record.sync(&None) {
                     error!("An error occurred while syncing records: {}", err);
-
-                    std::process::exit(1);
                 }
             }));
         }
@@ -62,7 +61,7 @@ impl Runner {
         }
     }
 
-    fn build_records(config: Config) -> Vec<Box<dyn SyncableRecord>> {
+    fn build_records(config: Config, writer: &Arc<CliWriter>) -> Vec<Box<dyn SyncableRecord>> {
         let mut cf_records: Vec<Box<dyn SyncableRecord>> = Vec::new();
 
         let ip_cache = Arc::new(IpCache::new(config.get_total_number_of_records() as u64 * 2));
@@ -78,6 +77,7 @@ impl Runner {
                         client.clone(),
                         provider.clone(),
                         record,
+                        writer.clone(),
                     )));
                 }
             }
