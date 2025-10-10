@@ -1,5 +1,6 @@
 use crate::configuration::user::providers::Cloudflare;
 use crate::configuration::user::records::{CloudflareRecord as CloudflareConfigRecord, DnsType};
+use crate::io_helper::CliWriter;
 use crate::ip::resolver::IpResolver;
 use anyhow::{Error, anyhow};
 use cloudflare::endpoints::dns::dns::{
@@ -10,7 +11,6 @@ use cloudflare::framework::client::blocking_api::HttpApiClient;
 use indicatif::ProgressBar;
 use std::collections::HashMap;
 use std::sync::Arc;
-use tracing::error;
 
 pub(crate) trait SyncableRecord: Send {
     fn sync(&mut self, progress_bar: &Option<ProgressBar>) -> Result<(), Error>;
@@ -21,6 +21,7 @@ pub(crate) struct CloudflareRecord {
     pub(crate) client: Arc<HttpApiClient>,
     pub(crate) provider: Arc<Cloudflare>,
     pub(crate) record: CloudflareConfigRecord,
+    pub(crate) writer: Arc<CliWriter>,
     pub(crate) id_cache: HashMap<DnsType, String>,
 }
 
@@ -30,12 +31,14 @@ impl CloudflareRecord {
         client: Arc<HttpApiClient>,
         provider: Arc<Cloudflare>,
         record: CloudflareConfigRecord,
+        writer: Arc<CliWriter>,
     ) -> Self {
         Self {
             ip_resolver,
             client,
             provider,
             record,
+            writer,
             id_cache: HashMap::new(),
         }
     }
@@ -70,6 +73,11 @@ impl CloudflareRecord {
     }
 
     fn resolve_record_id(&mut self, dns_type: &DnsType) -> Result<String, Error> {
+        self.writer.debug(format!(
+            "Searching for existing {} record for {}",
+            dns_type,
+            self.record.basic_record.name.as_str()
+        ));
         let rs = self.client.request(&ListDnsRecords {
             zone_identifier: self.provider.zone_id.as_str(),
             params: ListDnsRecordsParams {
@@ -116,11 +124,11 @@ impl CloudflareRecord {
                 Ok(id)
             }
             len => {
-                error!(
+                self.writer.error(format!(
                     "DNS Search for {} resulted in more than 1 result. ({} results)",
                     self.record.basic_record.name.as_str(),
                     len
-                );
+                ));
 
                 Err(anyhow!("Invalid search result length!"))
             }
@@ -128,6 +136,11 @@ impl CloudflareRecord {
     }
 
     fn create_new_dns_record(&self, dns_type: &DnsType) -> Result<DnsRecord, Error> {
+        self.writer.debug(format!(
+            "No existing {:?} record found for {}. Creating a new one.",
+            dns_type,
+            self.record.basic_record.name.as_str()
+        ));
         let rs = self.client.request(&CreateDnsRecord {
             zone_identifier: self.provider.zone_id.as_str(),
             params: CreateDnsRecordParams {
@@ -156,8 +169,10 @@ impl CloudflareRecord {
 
 impl SyncableRecord for CloudflareRecord {
     fn sync(&mut self, progress_bar: &Option<ProgressBar>) -> Result<(), Error> {
-        let types = std::mem::take(&mut self.record.basic_record.dns_type);
+        let types = self.record.basic_record.dns_type.clone();
         for dns_type in &types {
+            self.writer.debug(format!("Syncing record {} of type {}", self.record.basic_record.name, dns_type));
+
             self.sync_dns_record(dns_type)?;
             if let Some(progress_bar) = progress_bar {
                 progress_bar.inc(1);
@@ -170,9 +185,11 @@ impl SyncableRecord for CloudflareRecord {
 
 #[cfg(test)]
 mod tests {
+    use crate::Verbosity;
     use crate::configuration::user::providers::Cloudflare;
     use crate::configuration::user::records::{BasicRecord, CloudflareRecord as CloudflareConfigRecord, DnsType};
     use crate::dns::record::{CloudflareRecord, SyncableRecord};
+    use crate::io_helper::CliWriter;
     use crate::ip::cache::IpCache;
     use crate::ip::resolver::IpResolver;
     use crate::ip::resolver::ipify::IpifyResolver;
@@ -286,6 +303,7 @@ mod tests {
                 },
                 proxied: false,
             },
+            writer: Arc::new((CliWriter::new(&Verbosity::default()))),
             id_cache: Default::default(),
         };
 

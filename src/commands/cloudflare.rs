@@ -1,4 +1,5 @@
 use crate::cloudflare_api::build_cloudflare_client;
+use crate::io_helper::CliWriter;
 use clap::Subcommand;
 use cloudflare::endpoints::zones::zone::ListZones;
 use cloudflare::framework::client::blocking_api::HttpApiClient;
@@ -6,7 +7,6 @@ use cloudflare::framework::response::ApiFailure;
 use comfy_table::Table;
 use comfy_table::presets::UTF8_FULL;
 use thiserror::Error;
-use tracing::info;
 
 #[derive(Subcommand)]
 pub(crate) enum CloudflareCommands {
@@ -23,21 +23,24 @@ pub(crate) enum CloudflareCommandError {
     ApiFailure(#[from] ApiFailure),
 }
 
-pub(crate) fn handle_cloudflare_commands(command: CloudflareCommands) -> Result<(), CloudflareCommandError> {
+pub(crate) fn handle_cloudflare_commands(
+    command: CloudflareCommands,
+    writer: &CliWriter,
+) -> Result<(), CloudflareCommandError> {
     match command {
         CloudflareCommands::ListZones {
             auth_token,
         } => {
             let client = build_cloudflare_client(auth_token);
-            list_all_zones(&client)?;
+            list_all_zones(&client, writer)?;
         }
     }
 
     Ok(())
 }
 
-fn list_all_zones(client: &HttpApiClient) -> Result<(), CloudflareCommandError> {
-    info!("Requesting all of your zones from Cloudflare.\n");
+fn list_all_zones(client: &HttpApiClient, writer: &CliWriter) -> Result<(), CloudflareCommandError> {
+    writer.info("Requesting all of your zones from Cloudflare.\n");
 
     let response = client.request(&ListZones {
         params: Default::default(),
