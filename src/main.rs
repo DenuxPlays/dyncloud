@@ -10,6 +10,7 @@ use indicatif::ProgressBar;
 use std::path::PathBuf;
 use tracing::{error, info};
 use validator::Validate;
+use crate::io_helper::CliWriter;
 
 #[cfg(feature = "mimalloc")]
 #[cfg_attr(feature = "mimalloc", global_allocator)]
@@ -22,6 +23,7 @@ mod commands;
 mod configuration;
 mod dns;
 mod error;
+mod io_helper;
 mod ip;
 mod logger;
 mod runner;
@@ -68,6 +70,7 @@ struct CommonSyncRunArgs {
 fn main() {
     let args = CliArgs::parse();
     init_tracing(&args.verbosity);
+    let writer = CliWriter::new(&args.verbosity);
 
     if let Err(err) = run_command(args) {
         if let ApplicationError::ValidationErrors(errors) = err {
