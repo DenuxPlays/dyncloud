@@ -41,7 +41,7 @@ comfy-table = "7.2.1"
 indicatif = "0.18.0"
 
 # Scheduling
-job_scheduler_ng = { git = "https://github.com/DenuxPlays/job_scheduler.git", branch = "feature/croner", default-features = false, features = ["croner"] }
+job_scheduler_ng = { git = "https://github.com/BlackDex/job_scheduler.git", default-features = false, features = ["croner"] }
 
 # File serialization and deserialization
 toml = "0.9.8"
