@@ -14,6 +14,12 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
+## Version 2.0.0-alpha.6 (12.10.2025)
+
+### Added
+
+- x64 freebsd support
+
 ## Version 2.0.0-alpha.5 (10.10.2025)
 
 ### Added
