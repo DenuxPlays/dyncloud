@@ -14,17 +14,28 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
-## Version 2.0.0-alpha.5 (Unreleased)
+## Version 2.0.0-beta.1 (unreleased)
 
 ### Added
 
-- `--debug`/`-d` flag to enable debug logging
 - Added IPv6 docker compose config example
+- Added docker timezone support
+- Added migration guide
+- Added V2 Documentation
 
 ### Changed
 
 - added timestamp to log messages
 - renamed `compose.yaml.dist` to `compose.dist.yaml`
+
+## Version 2.0.0-alpha.5 (10.10.2025)
+
+### Added
+
+- `--debug`/`-d` flag to enable debug logging
+
+### Changed
+
 - updated dependencies
 - introduced custom logger
 
