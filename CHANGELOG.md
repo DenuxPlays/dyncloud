@@ -18,12 +18,15 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 
 ### Added
 
+- `--debug`/`-d` flag to enable debug logging
 - Added IPv6 docker compose config example
 
 ### Changed
 
 - added timestamp to log messages
 - renamed `compose.yaml.dist` to `compose.dist.yaml`
+- updated dependencies
+- introduced custom logger
 
 ## Version 2.0.0-alpha.1 (09.10.2025)
 
