@@ -27,7 +27,8 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 
 - added timestamp to log messages
 - renamed `compose.yaml.dist` to `compose.dist.yaml`
-
+- updated dependencies
+s
 ## Version 2.0.0-alpha.5 (10.10.2025)
 
 ### Added
