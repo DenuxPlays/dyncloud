@@ -14,7 +14,7 @@ RUN cargo build --release --features "mimalloc"
 FROM alpine:3.22.2
 
 # Update package repositories
-RUN apk add --no-cache curl && \
+RUN apk add --no-cache curl tzdata && \
     apk update
 
 # User creation
