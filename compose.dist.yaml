@@ -1,0 +1,15 @@
+services:
+  dyncloud:
+    image: ghcr.io/denuxplays/dyncloud:2
+    init: true
+    restart: unless-stopped
+    environment:
+      TZ: "Etc/UTC"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro # We need that to support timezones other that "Etc/UTC"
+      - ./config.toml:/home/dyncloud/config.toml:ro # The config file
+
+# The following is optional and only needed if you want to enable IPv6 support (e.g. update DNS records with Type AAAA)
+networks:
+  default:
+    enable_ipv6: true
