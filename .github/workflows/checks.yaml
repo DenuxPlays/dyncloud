@@ -1,15 +1,12 @@
 name: Checks
 
-# TODO remove v2 branches when v2 is getting merged
 on:
   push:
     branches:
       - main
-      - v2
   pull_request:
     branches:
       - main
-      - v2
 
 env:
   CARGO_TERM_COLOR: always

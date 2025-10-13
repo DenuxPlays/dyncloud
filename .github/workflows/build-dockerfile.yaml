@@ -1,11 +1,9 @@
 name: Build Dockerfile
 
-# TODO remove v2 branches when v2 is getting merged
 on:
   pull_request:
     branches:
       - main
-      - v2
 
 jobs:
   build:
