@@ -46,7 +46,7 @@ jobs:
           override: true
 
       - name: Run rustfmt check and annotate PR
-        uses: clechasseur/rs-fmt-check@v2
+        uses: clechasseur/rs-fmt-check@v3
         with:
           toolchain: nightly
 
