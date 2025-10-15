@@ -1,14 +1,13 @@
 [package]
 name = "dyncloud"
-version = "1.5.4"
+version = "2.0.0-beta.1"
+description = "A programm that handles updating DNS records with your current public IP address."
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
-description = "A programm that handles updating DNS records with your current public IP address for Cloudflare."
-license = "GPL-3"
+license = "AGPL-3"
 repository = "https://github.com/DenuxPlays/dyncloud"
 homepage = "https://github.com/DenuxPlays/dyncloud"
 readme = "README.md"
 edition = "2024"
-rust-version = "1.88.0"
 
 [package.metadata.wix]
 upgrade-guid = "2A41DDA9-0B62-4946-BFFC-410B38137366"
@@ -16,24 +15,50 @@ path-guid = "EAD2959B-66EC-4A95-BC27-3DF7E4057C47"
 license = false
 eula = false
 
+[lints.rust]
+# Forbid
+unsafe_code = "forbid"
+non_ascii_idents = "forbid"
+
+[lints.clippy]
+# Deny
+unwrap_used = "deny"
+expect_used = "deny"
+
 [features]
 # Enable mimalloc memory allocator to replace the default malloc
 # This can improve performance for Alpine builds
-enable_mimalloc = ["mimalloc"]
+mimalloc = ["dep:mimalloc"]
 
 [dependencies]
-# Async runtime
-tokio = { version = "1.47.1", features = ["rt", "macros", "rt-multi-thread"] }
+# CLI
+clap = { version = "4.5.48", features = ["derive"] }
+clap-verbosity-flag = { version = "3.0.4", default-features = false, features = ["tracing"] }
+anstyle = "1.0.13"
+comfy-table = "7.2.1"
+
+## Progress bar
+indicatif = "0.18.0"
+
+# Scheduling
+job_scheduler_ng = { version = "2.4.0", default-features = false, features = ["croner"] }
 
 # File serialization and deserialization
 toml = "0.9.8"
 
+# Validation
+validator = { version = "0.20.0", features = ["derive"] }
+
 # Cloudflare API
-cloudflare = { version = "0.14.0", features = ["rustls-tls"], default-features = false }
+cloudflare = { version = "0.14.0", features = ["rustls-tls", "blocking"], default-features = false }
+http = "1.3.1"
+
+# Time
+chrono = { version = "0.4.42", features = ["clock"] }
 
 # Logging
-log = "0.4.28"
-simple_logger = "5.0.0"
+tracing = "0.1.41"
+tracing-subscriber = "0.3.20"
 
 # Serde
 serde = { version = "1.0.228", features = ["derive"] }
@@ -43,16 +68,24 @@ reqwest = { version = "0.12.23", features = [
     "rustls-tls",
     "charset",
     "http2",
-    "macos-system-configuration"
+    "system-proxy",
+    "blocking",
 ], default-features = false }
 
-# Utils
-time = "0.3.44"
+# Error handling
+thiserror = "2.0.17"
 anyhow = "1.0.100"
 
 # mimalloc
 # Replaces musl malloc since it is very slow
 mimalloc = { version = "0.1.48", optional = true, features = ["v3"] }
+
+[dev-dependencies]
+# Mocking APIs
+mockito = "1.7.0"
+
+# JSON
+serde_json = "1.0.145"
 
 # The profile that 'cargo dist' will build with
 [profile.dist]

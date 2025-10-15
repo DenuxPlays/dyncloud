@@ -1,0 +1,26 @@
+# The cron that defines when we check for a new IP address
+cron = "*/10 * * * * *" # Every 10 seconds
+
+[[domains]]
+    # The following section is focussing on the Ip Resolver.
+    # The default is "Ipify", which works on all platforms. But is currently the only option.
+    # resolver = "Ipfiy"
+
+    [domains.config.cloudflare]
+    # The cloudflare API token that will be used to authenticate with the API
+    auth_token = "auth_token"
+    # The cloudflare zone ID that will be used to identify the zone to update
+    zone_id = "zone_id"
+
+    [[domains.cloudflare]]
+    # The domain name that will be updated
+    name = "example.internal"
+    # ttl (time to live) for the record
+    # for cloudflare, 1 = automatic
+    ttl = 1
+    # The type of record that will be updated
+    # Valid values are: A, AAAA
+    # In this case, we will update both A and AAAA records (IPv4 and IPv6 respectively)
+    type = ["A", "AAAA"]
+    # (cloudflare only) proxied = true if the record is proxied by cloudflare
+    proxied = false
