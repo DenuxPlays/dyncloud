@@ -14,7 +14,39 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
-## Version 2.0.0-beta.1 (unreleased)
+## Version 2.0.0 (15.10.2025)
+
+### Breaking
+
+- Convert dyncloud to a CLI
+- Updated Config format: See migration guide for further instructions
+- Replace interval with cron expression [#136](https://github.com/DenuxPlays/dyncloud/issues/136)
+
+### Added
+
+- Added IPv6 docker compose config example
+- Added docker timezone support
+- Added migration guide
+- Added V2 Documentation
+- `--debug`/`-d` flag to enable debug logging
+- Added proper Config validation with user-friendly output
+- Get Cloudflare Record by DNSType and Name [#107](https://github.com/DenuxPlays/dyncloud/issues/107)
+- Added utility command to list cloudflare zones
+- Added command to sync records just one time
+- support for Windows arm64
+- added colored output
+
+### Changed
+
+- added timestamp to log messages
+- renamed `compose.yaml.dist` to `compose.dist.yaml`
+- updated dependencies
+- introduced custom logger
+- Log errors instead of crashing [#108](https://github.com/DenuxPlays/dyncloud/issues/108)
+- The Docker Image can now be used as a standalone CLI
+- updated rust to 1.90.0
+
+## Version 2.0.0-beta.1 (13.10.2025)
 
 ### Added
 
@@ -28,7 +60,7 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 - added timestamp to log messages
 - renamed `compose.yaml.dist` to `compose.dist.yaml`
 - updated dependencies
-s
+
 ## Version 2.0.0-alpha.5 (10.10.2025)
 
 ### Added
