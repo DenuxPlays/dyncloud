@@ -1,6 +1,6 @@
 [package]
 name = "dyncloud"
-version = "2.0.0-beta.1"
+version = "2.0.0"
 description = "A programm that handles updating DNS records with your current public IP address."
 authors = ["Timon Klinkert <DenuxPlays@users.noreply.github.com>"]
 license = "AGPL-3"
@@ -32,16 +32,16 @@ mimalloc = ["dep:mimalloc"]
 
 [dependencies]
 # CLI
-clap = { version = "4.5.48", features = ["derive"] }
+clap = { version = "4.5.50", features = ["derive"] }
 clap-verbosity-flag = { version = "3.0.4", default-features = false, features = ["tracing"] }
 anstyle = "1.0.13"
 comfy-table = "7.2.1"
 
 ## Progress bar
-indicatif = "0.18.0"
+indicatif = "0.18.1"
 
 # Scheduling
-job_scheduler_ng = { git = "https://github.com/BlackDex/job_scheduler.git", default-features = false, features = ["croner"] }
+job_scheduler_ng = { version = "2.4.0", default-features = false, features = ["croner"] }
 
 # File serialization and deserialization
 toml = "0.9.8"
@@ -64,7 +64,7 @@ tracing-subscriber = "0.3.20"
 serde = { version = "1.0.228", features = ["derive"] }
 
 # HTTP client
-reqwest = { version = "0.12.23", features = [
+reqwest = { version = "0.12.24", features = [
     "rustls-tls",
     "charset",
     "http2",
