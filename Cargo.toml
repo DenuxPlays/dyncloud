@@ -38,7 +38,7 @@ anstyle = "1.0.13"
 comfy-table = "7.2.1"
 
 ## Progress bar
-indicatif = "0.18.1"
+indicatif = "0.18.2"
 
 # Scheduling
 job_scheduler_ng = { version = "2.4.0", default-features = false, features = ["croner"] }
