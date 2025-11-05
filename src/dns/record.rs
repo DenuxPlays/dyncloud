@@ -303,7 +303,7 @@ mod tests {
                 },
                 proxied: false,
             },
-            writer: Arc::new((CliWriter::new(&Verbosity::default()))),
+            writer: Arc::new(CliWriter::new(&Verbosity::default())),
             id_cache: Default::default(),
         };
 
