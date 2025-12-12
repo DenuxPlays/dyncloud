@@ -20,6 +20,7 @@ We do this to make it easier to read when using `cargo-dist` to generate the rel
 
 - updated rust
 - updated dependencies
+- updated alpine to v3.23
 
 ## Version 2.0.0 (15.10.2025)
 
