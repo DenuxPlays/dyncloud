@@ -32,7 +32,7 @@ mimalloc = ["dep:mimalloc"]
 
 [dependencies]
 # CLI
-clap = { version = "4.5.56", features = ["derive"] }
+clap = { version = "4.5.57", features = ["derive"] }
 clap-verbosity-flag = { version = "3.0.4", default-features = false, features = ["tracing"] }
 anstyle = "1.0.13"
 comfy-table = "7.2.2"
@@ -64,13 +64,12 @@ tracing-subscriber = "0.3.22"
 serde = { version = "1.0.228", features = ["derive"] }
 
 # HTTP client
-reqwest = { version = "0.12.28", features = [
-    "rustls-tls",
+reqwest = { version = "0.13.1", features = [
     "charset",
     "http2",
     "system-proxy",
     "blocking",
-], default-features = false }
+] }
 
 # Error handling
 thiserror = "2.0.18"
