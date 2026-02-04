@@ -14,6 +14,13 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
+## Version 2.0.2 (03.02.2026)
+
+### Changed
+
+- updated rust
+- updated dependencies
+
 ## Version 2.0.1 (15.12.2025)
 
 ### Changed
