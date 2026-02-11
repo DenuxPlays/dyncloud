@@ -44,7 +44,7 @@ indicatif = "0.18.3"
 job_scheduler_ng = { version = "2.4.0", default-features = false, features = ["croner"] }
 
 # File serialization and deserialization
-toml = "0.9.12"
+toml = "1.0.0"
 
 # Validation
 validator = { version = "0.20.0", features = ["derive"] }
