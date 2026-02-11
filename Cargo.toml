@@ -32,7 +32,7 @@ mimalloc = ["dep:mimalloc"]
 
 [dependencies]
 # CLI
-clap = { version = "4.5.57", features = ["derive"] }
+clap = { version = "4.5.58", features = ["derive"] }
 clap-verbosity-flag = { version = "3.0.4", default-features = false, features = ["tracing"] }
 anstyle = "1.0.13"
 comfy-table = "7.2.2"
