@@ -58,7 +58,7 @@ chrono = { version = "0.4.44", features = ["clock"] }
 
 # Logging
 tracing = "0.1.44"
-tracing-subscriber = "0.3.22"
+tracing-subscriber = "0.3.23"
 
 # Serde
 serde = { version = "1.0.228", features = ["derive"] }
