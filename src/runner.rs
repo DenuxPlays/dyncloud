@@ -5,7 +5,6 @@ use crate::configuration::user::records::RecordsGroup;
 use crate::configuration::user::resolver::Resolver;
 use crate::dns::record::{CloudflareRecord, SyncableRecord};
 use crate::io_helper::CliWriter;
-use crate::ip::cache::IpCache;
 use crate::ip::resolver::IpResolver;
 use crate::ip::resolver::ipify::IpifyResolver;
 use indicatif::ProgressBar;
@@ -49,7 +48,7 @@ impl Runner {
         for mut record in self.records {
             scheduler.add(Job::new(cron.clone(), move || {
                 if let Err(err) = record.sync(&None) {
-                    error!("An error occurred while syncing records: {}", err);
+                    error!("An error occurred while syncing records: {:?}", err);
                 }
             }));
         }
@@ -64,10 +63,8 @@ impl Runner {
     fn build_records(config: Config, writer: &Arc<CliWriter>) -> Vec<Box<dyn SyncableRecord>> {
         let mut cf_records: Vec<Box<dyn SyncableRecord>> = Vec::new();
 
-        let ip_cache = Arc::new(IpCache::new(config.get_total_number_of_records() as u64 * 2));
-
         for group in config.records {
-            let resolver = Self::build_resolver(&group, ip_cache.clone());
+            let resolver = Self::build_resolver(&group);
             if let Some(provider) = group.providers.cloudflare {
                 let provider = Arc::new(provider);
                 let client = Arc::new(build_cloudflare_client(provider.auth_token.clone()));
@@ -86,9 +83,9 @@ impl Runner {
         cf_records
     }
 
-    fn build_resolver(records_group: &RecordsGroup, cache: Arc<IpCache>) -> Arc<Box<dyn IpResolver>> {
+    fn build_resolver(records_group: &RecordsGroup) -> Arc<Box<dyn IpResolver>> {
         match records_group.resolver {
-            Resolver::Ipfiy => Arc::new(Box::new(IpifyResolver::from_ip_cache(cache))),
+            Resolver::Ipfiy => Arc::new(Box::new(IpifyResolver::default())),
         }
     }
 }
