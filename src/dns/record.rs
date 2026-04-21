@@ -190,7 +190,6 @@ mod tests {
     use crate::configuration::user::records::{BasicRecord, CloudflareRecord as CloudflareConfigRecord, DnsType};
     use crate::dns::record::{CloudflareRecord, SyncableRecord};
     use crate::io_helper::CliWriter;
-    use crate::ip::cache::IpCache;
     use crate::ip::resolver::IpResolver;
     use crate::ip::resolver::ipify::IpifyResolver;
     use cloudflare::framework::Environment;
@@ -327,7 +326,6 @@ mod tests {
 
         (
             Arc::new(Box::new(IpifyResolver::new(
-                Arc::new(IpCache::new(10)),
                 Client::new(),
                 format!("{}/ipv4", server.url().as_str()),
                 format!("{}/ipv6", server.url().as_str()),
