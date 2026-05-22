@@ -77,7 +77,7 @@ anyhow = "1.0.102"
 
 # mimalloc
 # Replaces musl malloc since it is very slow
-mimalloc = { version = "0.1.51", optional = true }
+mimalloc = { version = "0.1.52", optional = true }
 
 [dev-dependencies]
 # Mocking APIs
