@@ -1100,9 +1100,9 @@ dependencies = [
 
 [[package]]
 name = "job_scheduler_ng"
-version = "2.4.0"
+version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "217723d58ee473953675d15f11e56898a611aca8ea044d5a34eabeade99ef613"
+checksum = "576b4255ab9de8ce7b81060ec54b1b7f8499dfd6c16a66c4cd4cb1ad4eba27e3"
 dependencies = [
  "chrono",
  "croner",
