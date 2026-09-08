@@ -35,7 +35,7 @@ mimalloc = ["dep:mimalloc"]
 clap = { version = "4.6.6", features = ["derive"] }
 clap-verbosity-flag = { version = "3.0.4", default-features = false, features = ["tracing"] }
 anstyle = "1.0.14"
-comfy-table = "7.2.2"
+comfy-table = "8.0.0"
 
 ## Progress bar
 indicatif = "0.18.6"
