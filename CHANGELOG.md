@@ -14,10 +14,11 @@ What we've changed:
 
 We do this to make it easier to read when using `cargo-dist` to generate the release notes from the changelog.
 
-## Unreleased
+## Version 2.0.3 (22.10.2026)
 
 ### Changed
 
+- updated alpine docker version
 - updated rust
 - updated dependencies
 - updated cargo-dist
