@@ -47,7 +47,7 @@ fn list_all_zones(client: &HttpApiClient, writer: &CliWriter) -> Result<(), Clou
     })?;
 
     let mut table = Table::new();
-    table.load_preset(UTF8_FULL);
+    table.load_style(UTF8_FULL);
     table.set_header(vec!["Zone ID", "Zone Name"]);
     for zone in response.result {
         table.add_row(vec![zone.id, zone.name]);
