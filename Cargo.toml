@@ -73,7 +73,7 @@ reqwest = { version = "0.13.5", features = [
 
 # Error handling
 thiserror = "2.0.21"
-anyhow = "1.0.104"
+anyhow = "1.0.105"
 
 # mimalloc
 # Replaces musl malloc since it is very slow
